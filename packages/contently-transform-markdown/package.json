@@ -1,9 +1,11 @@
 {
   "name": "contently-transform-markdown",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
-  "files": ["build"],
+  "files": [
+    "build"
+  ],
   "license": "MIT",
   "author": "krmax44<hi@krmax44.de>",
   "repository": {
