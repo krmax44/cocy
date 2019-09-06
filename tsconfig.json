@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "target": "es2015",
+    "esModuleInterop": true,
+    "declaration": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "build"
+  ],
+  "compileOnSave": true,
+  "types": ["inquirer"]
+}

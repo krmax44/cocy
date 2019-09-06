@@ -1,0 +1,64 @@
+{
+	"name": "contently",
+	"private": true,
+	"version": "0.0.0",
+	"license": "MIT",
+	"author": "krmax44<hi@krmax44.de>",
+	"repository": {
+		"url": "https://github.com/krmax44/contently.git",
+		"type": "git"
+	},
+	"scripts": {
+		"test": "mocha -r ts-node/register 'packages/**/*.test.ts' && yarn lint",
+		"lint": "xo",
+		"build": "lerna run --parallel build",
+		"dev": "lerna run --parallel dev",
+		"bootstrap": "lerna bootstrap"
+	},
+	"workspaces": [
+		"packages/*"
+	],
+	"devDependencies": {
+		"@types/chai": "^4.2.1",
+		"@types/mocha": "^5.2.7",
+		"@typescript-eslint/eslint-plugin": "^1.13.0",
+		"@typescript-eslint/parser": "^1.13.0",
+		"chai": "^4.2.0",
+		"eslint-config-prettier": "^6.0.0",
+		"eslint-config-xo-typescript": "^0.15.0",
+		"eslint-plugin-prettier": "^3.1.0",
+		"husky": "^3.0.3",
+		"lerna": "^3.16.4",
+		"mocha": "^6.2.0",
+		"prettier": "^1.18.2",
+		"ts-node": "^8.3.0",
+		"typescript": "^3.5.3",
+		"xo": "^0.24.0"
+	},
+	"xo": {
+		"extends": [
+			"xo-typescript",
+			"plugin:prettier/recommended"
+		],
+		"extensions": [
+			"ts"
+		],
+		"rules": {
+			"unicorn/filename-case": "off"
+		},
+		"prettier": true,
+		"ignores": [
+			"./tests/**"
+		]
+	},
+	"prettier": {
+		"bracketSpacing": true,
+		"singleQuote": true,
+		"useTabs": true
+	},
+	"husky": {
+		"hooks": {
+			"pre-push": "yarn test"
+		}
+	}
+}

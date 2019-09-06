@@ -1,0 +1,22 @@
+{
+	"name": "contently-source-fs",
+	"version": "0.0.0",
+	"main": "./build/index.js",
+	"types": "./build/types/index.d.ts",
+	"license": "MIT",
+	"author": "krmax44<hi@krmax44.de>",
+	"repository": {
+		"url": "https://github.com/krmax44/contently.git",
+		"type": "git",
+		"directory": "packages/contently-source-fs"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"dev": "tsc -p tsconfig.json -w"
+	},
+	"dependencies": {
+		"@types/fs-extra": "^8.0.0",
+		"fs-extra": "^8.1.0",
+		"globby": "^10.0.1"
+	}
+}
