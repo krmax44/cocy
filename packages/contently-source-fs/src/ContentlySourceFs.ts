@@ -1,44 +1,55 @@
-import * as path from 'path';
-import globby, { GlobbyOptions } from 'globby';
+import { join, parse } from 'path';
 import { readFile, stat } from 'fs-extra';
+import globby, { GlobbyOptions } from 'globby';
+import { Contently, ContentlyResult } from 'contently';
 
-export class ContentlySourceFs {
-	public patterns: string | string[];
+interface Options extends GlobbyOptions {
+	/**
+	 * @name patterns
+	 * @description One or multiple glob patterns
+	 * @default "['*.md', '*.markdown', '!.*', '!_*']"
+	 */
+	patterns: string | string[];
+}
 
-	public options: GlobbyOptions;
+export default async function(
+	instance: Contently,
+	_options: Options
+): Promise<void> {
+	const options = {
+		patterns: ['*.md', '*.markdown', '!.*', '!_*'],
+		..._options
+	};
+	const files: Array<Promise<ContentlyResult>> = [];
 
-	constructor(patterns?: string | string[], options?: GlobbyOptions) {
-		this.patterns = patterns || ['*.md', '*.markdown', '!.*', '!_*'];
-		this.options = options;
+	for await (const file of globby.stream(options.patterns, {
+		...options,
+		cwd: instance.options.cwd
+	})) {
+		files.push(
+			new Promise((resolve, reject) => {
+				const path = join(instance.options.cwd, file as string);
+
+				readFile(path, 'utf8')
+					.then(async data => {
+						const title = parse(path).name;
+						const { birthtime: createdAt, mtime: modifiedAt } = await stat(
+							path
+						);
+						resolve(
+							new ContentlyResult({
+								id: path,
+								slug: instance.options.slugify(title),
+								data,
+								attributes: { createdAt, modifiedAt, title }
+							})
+						);
+					})
+					.catch(reject);
+			})
+		);
 	}
 
-	async source() {
-		const files = [];
-		const cwd = this.options.cwd || process.cwd();
-
-		for await (const file of globby.stream(this.patterns, this.options)) {
-			files.push(
-				new Promise((resolve, reject) => {
-					const location = path.join(cwd, file as string);
-					readFile(location, 'utf8')
-						.then(async (data: string) => {
-							const slug = path.parse(location).name;
-							const { ctime: createdAt, mtime: modifiedAt } = await stat(
-								location
-							);
-							resolve({
-								id: location,
-								slug,
-								createdAt,
-								modifiedAt,
-								data
-							});
-						})
-						.catch(reject);
-				})
-			);
-		}
-
-		return Promise.all(files);
-	}
+	const results = await Promise.all(files);
+	instance.addResult(results);
 }

@@ -1,10 +1,15 @@
-import { Transformer } from './Transformer';
-import { Sourcer } from './Sourcer';
-import { Writer } from './Writer';
-
 export interface ContentlyOptions {
-	sourcer: Sourcer;
-	transformer: Transformer;
-	writer: Writer;
+	/**
+	 * @name cwd
+	 * @description The current working directory.
+	 * @default process.cwd()
+	 */
+	cwd?: string;
+
+	/**
+	 * @name slugify
+	 * @description A function that slugifies a given input.L0
+	 * @default slugo
+	 */
 	slugify?: (input: string) => string;
 }

@@ -1,7 +1,5 @@
 {
-	"name": "contently",
 	"private": true,
-	"version": "0.0.0",
 	"license": "MIT",
 	"author": "krmax44<hi@krmax44.de>",
 	"repository": {
@@ -11,8 +9,8 @@
 	"scripts": {
 		"test": "mocha -r ts-node/register 'packages/**/*.test.ts' && yarn lint",
 		"lint": "xo",
-		"build": "lerna run --parallel build",
-		"dev": "lerna run --parallel dev",
+		"build": "lerna run build",
+		"dev": "lerna run dev",
 		"bootstrap": "lerna bootstrap"
 	},
 	"workspaces": [
@@ -44,8 +42,17 @@
 			"ts"
 		],
 		"rules": {
-			"unicorn/filename-case": "off"
+			"unicorn/filename-case": "off",
+			"@typescript-eslint/no-var-requires": "off"
 		},
+		"overrides": [{
+			"files": "**/tests/**",
+			"rules": {
+				"import/no-extraneous-dependencies": "off",
+				"import/no-unassigned-import": "off",
+				"no-undef": "off"
+			}
+		}],
 		"prettier": true,
 		"ignores": [
 			"./tests/**"

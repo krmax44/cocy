@@ -1,30 +1,40 @@
-import { Sourcer, Writer, Transformer, ContentlyOptions } from './types';
+import { ContentlyOptions, ContentlyPlugin, PluginList } from './types';
+
+import { ContentlyResult } from './ContentlyResult';
+
+const slugo = require('slugo');
 
 export class Contently {
-	public sourcer: Sourcer;
+	public plugins: PluginList = [];
 
-	public transformer: Transformer;
+	public options: ContentlyOptions;
 
-	public writer: Writer;
+	public results: ContentlyResult[] = [];
 
 	constructor(options: ContentlyOptions) {
-		this.sourcer = options.sourcer;
-		this.transformer = options.transformer;
-		this.writer = options.writer;
+		this.options = {
+			cwd: process.cwd(),
+			slugify: slugo,
+			...options
+		};
 	}
 
-	async run() {
-		const sources = await Promise.resolve(this.sourcer.source());
+	use(plugin: ContentlyPlugin, options?: any): Contently {
+		this.plugins.push({ plugin, options });
+		return this;
+	}
 
-		const writerQueue: Array<Promise<any>> = [];
-		for (const source of sources) {
-			Promise.resolve(this.transformer.transform(source)).then(transfomed => {
-				writerQueue.push(
-					Promise.resolve(this.writer.write(source, transfomed))
-				);
-			});
+	addResult(result: ContentlyResult | ContentlyResult[]): Contently {
+		if (Array.isArray(result)) this.results.push(...result);
+		else this.results.push(result);
+		return this;
+	}
+
+	async run(): Promise<Contently> {
+		for (const { plugin, options } of this.plugins) {
+			await Promise.resolve(plugin(this, options)); // eslint-disable-line no-await-in-loop
 		}
 
-		return Promise.all(writerQueue);
+		return this;
 	}
 }

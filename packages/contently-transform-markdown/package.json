@@ -1,0 +1,28 @@
+{
+  "name": "contently-transform-markdown",
+  "version": "0.0.0",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": ["build"],
+  "license": "MIT",
+  "author": "krmax44<hi@krmax44.de>",
+  "repository": {
+    "url": "https://github.com/krmax44/contently.git",
+    "type": "git",
+    "directory": "packages/contently-transform-markdown"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json",
+    "dev": "tsc -p ./tsconfig.json -w"
+  },
+  "peerDependencies": {
+    "contently": "^0.0.0"
+  },
+  "dependencies": {
+    "remark": "^11.0.1",
+    "remark-extract-frontmatter": "^2.0.0",
+    "remark-frontmatter": "^1.3.2",
+    "remark-html": "^10.0.0",
+    "yaml": "^1.6.0"
+  }
+}

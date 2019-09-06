@@ -10,9 +10,8 @@
   },
   "exclude": [
     "node_modules",
-    "**/*.spec.ts",
-    "build"
+    "**/*.test.ts",
+    "**/build/**"
   ],
-  "compileOnSave": true,
-  "types": ["inquirer"]
+  "compileOnSave": true
 }
