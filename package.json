@@ -7,9 +7,10 @@
 		"type": "git"
 	},
 	"scripts": {
+		"pretest": "yarn build",
 		"test": "mocha -r ts-node/register 'packages/**/*.test.ts' && yarn lint",
 		"lint": "xo",
-		"build": "lerna run build",
+		"build": "yarn --cwd './packages/contently/' run build && lerna run build",
 		"dev": "lerna run dev",
 		"bootstrap": "lerna bootstrap"
 	},
