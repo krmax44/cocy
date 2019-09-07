@@ -11,7 +11,16 @@ Contently takes your content and turns it into a consumable API for your [JAMsta
 - wide use-case
 - easily approachable
 
-## Example
+## Examples
+
+### Usage with frameworks
+
+Take a look at the following example repos:
+
+- [Nuxt.js template](https://github.com/krmax44/nuxt-template-contently)
+- [Sapper template](https://github.com/krmax44/nuxt-template-contently) - :warning: WIP
+
+### Standalone
 
 ```
 📦 current working directory
