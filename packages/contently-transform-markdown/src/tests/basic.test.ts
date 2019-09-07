@@ -12,7 +12,6 @@ describe('basic markdown transform', () => {
 			.use(ContentlySourceFs)
 			.use(ContentlyTransformMarkdown);
 		const { results } = await contently.run();
-		console.log(results);
 
 		expect(results).to.eql([
 			{
