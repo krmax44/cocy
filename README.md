@@ -11,6 +11,15 @@ Contently takes your content and turns it into a consumable API for your [JAMsta
 - wide use-case
 - easily approachable
 
+## Documentation
+
+Each package has its own documentation:
+
+- [contently](https://github.com/krmax44/contently/blob/master/packages/contently/README.md)
+- [contently-json-api](https://github.com/krmax44/contently-json-api/blob/master/packages/contently/README.md)
+- [contently-source-fs](https://github.com/krmax44/contently-source-fs/blob/master/packages/contently/README.md)
+- [contently-transform-markdown](https://github.com/krmax44/contently-transform-markdown/blob/master/packages/contently/README.md)
+
 ## Examples
 
 ### Usage with frameworks
@@ -18,7 +27,7 @@ Contently takes your content and turns it into a consumable API for your [JAMsta
 Take a look at the following example repos:
 
 - [Nuxt.js template](https://github.com/krmax44/nuxt-template-contently)
-- [Sapper template](https://github.com/krmax44/nuxt-template-contently) - :warning: WIP
+- [Sapper template](https://github.com/krmax44/sapper-template-contently) - :warning: WIP
 
 ### Standalone
 
