@@ -51,5 +51,5 @@ export default async function(
 	}
 
 	const results = await Promise.all(files);
-	instance.addResult(results);
+	await instance.addResult(results);
 }
