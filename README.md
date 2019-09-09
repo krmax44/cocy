@@ -16,9 +16,9 @@ Contently takes your content and turns it into a consumable API for your [JAMsta
 Each package has its own documentation:
 
 - [contently](https://github.com/krmax44/contently/blob/master/packages/contently/README.md)
-- [contently-json-api](https://github.com/krmax44/contently-json-api/blob/master/packages/contently/README.md)
-- [contently-source-fs](https://github.com/krmax44/contently-source-fs/blob/master/packages/contently/README.md)
-- [contently-transform-markdown](https://github.com/krmax44/contently-transform-markdown/blob/master/packages/contently/README.md)
+- [contently-json-api](https://github.com/krmax44/contently/blob/master/packages/contently-json-api/README.md)
+- [contently-source-fs](https://github.com/krmax44/contently/blob/master/packages/contently-source-fs/README.md)
+- [contently-transform-markdown](https://github.com/krmax44/contently/blob/master/packages/contently-transform-markdown/README.md)
 
 ## Examples
 
