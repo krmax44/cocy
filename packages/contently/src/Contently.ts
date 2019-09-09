@@ -11,11 +11,11 @@ export class Contently {
 
 	public results: ContentlyResult[] = [];
 
-	constructor(options: ContentlyOptions) {
+	constructor(options?: ContentlyOptions) {
 		this.options = {
 			cwd: process.cwd(),
 			slugify: slugo,
-			...options
+			...(options || {})
 		};
 	}
 
