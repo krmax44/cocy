@@ -6,7 +6,15 @@
 		"publish": {
 			"ignoreChanges": ["*.md"],
 			"message": "chore(release): publish"
+		},
+		"version": {
+			"signGitCommit": true,
+			"conventionalCommits": true,
+			"createRelease": "github"
 		}
 	},
-	"version": "independent"
+	"version": "independent",
+	"ignoreChanges": [
+		"packages/*/tests/**"
+	]
 }
