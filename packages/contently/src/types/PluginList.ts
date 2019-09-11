@@ -1,6 +1,6 @@
-import { ContentlyPlugin } from './ContentlyPlugin';
+import { ContentlyPluginSetup } from './ContentlyPluginSetup';
 
 export type PluginList = Array<{
-	plugin: ContentlyPlugin;
+	plugin: ContentlyPluginSetup;
 	options?: any;
 }>;

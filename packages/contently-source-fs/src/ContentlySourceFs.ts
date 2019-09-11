@@ -1,7 +1,10 @@
 import { join, parse } from 'path';
 import { readFile, stat } from 'fs-extra';
 import globby, { GlobbyOptions } from 'globby';
-import { Contently, ContentlyResult } from 'contently';
+import { ContentlyResult, Contently } from 'contently';
+import { ContentlyPlugin } from 'contently/build/ContentlyPlugin';
+
+export const name = 'sourceFs';
 
 interface Options extends GlobbyOptions {
 	/**
@@ -12,44 +15,47 @@ interface Options extends GlobbyOptions {
 	patterns: string | string[];
 }
 
-export default async function(
-	instance: Contently,
+export async function runner(
+	this: ContentlyPlugin,
 	_options: Options
 ): Promise<void> {
 	const options = {
 		patterns: ['*.md', '*.markdown', '!.*', '!_*'],
 		..._options
 	};
-	const files: Array<Promise<ContentlyResult>> = [];
 
-	for await (const file of globby.stream(options.patterns, {
-		...options,
-		cwd: instance.options.cwd
-	})) {
-		files.push(
-			new Promise((resolve, reject) => {
-				const path = join(instance.options.cwd, file as string);
+	this.instance.on('run', async function(this: Contently) {
+		const files: Array<Promise<ContentlyResult>> = [];
 
-				readFile(path, 'utf8')
-					.then(async data => {
-						const title = parse(path).name;
-						const { birthtime: createdAt, mtime: modifiedAt } = await stat(
-							path
-						);
-						resolve(
-							new ContentlyResult({
-								id: path,
-								slug: instance.options.slugify(title),
-								data,
-								attributes: { createdAt, modifiedAt, title }
-							})
-						);
-					})
-					.catch(reject);
-			})
-		);
-	}
+		for await (const file of globby.stream(options.patterns, {
+			...options,
+			cwd: this.options.cwd
+		})) {
+			files.push(
+				new Promise((resolve, reject) => {
+					const path = join(this.options.cwd, file as string);
 
-	const results = await Promise.all(files);
-	await instance.addResult(results);
+					readFile(path, 'utf8')
+						.then(async data => {
+							const title = parse(path).name;
+							const { birthtime: createdAt, mtime: modifiedAt } = await stat(
+								path
+							);
+							resolve(
+								new ContentlyResult({
+									id: path,
+									slug: this.options.slugify(title),
+									data,
+									attributes: { createdAt, modifiedAt, title }
+								})
+							);
+						})
+						.catch(reject);
+				})
+			);
+		}
+
+		const results = await Promise.all(files);
+		await this.addResult(results);
+	});
 }

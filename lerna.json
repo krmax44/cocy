@@ -9,7 +9,6 @@
 		},
 		"version": {
 			"signGitCommit": true,
-			"conventionalCommits": true,
 			"createRelease": "github"
 		}
 	},

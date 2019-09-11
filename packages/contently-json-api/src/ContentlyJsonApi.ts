@@ -1,6 +1,9 @@
 import { join, parse } from 'path';
 import { writeJson, ensureDir } from 'fs-extra';
 import { Contently } from 'contently';
+import { ContentlyPlugin } from 'contently/build/ContentlyPlugin';
+
+export const name = 'jsonApi';
 
 /**
  * @name FileTree
@@ -46,8 +49,8 @@ function defaultTransformer(instance: Contently, options: Options): FileTree {
 	return tree;
 }
 
-export default async function(
-	instance: Contently,
+export async function runner(
+	this: ContentlyPlugin,
 	_options?: Options
 ): Promise<void> {
 	const options = {
@@ -56,15 +59,20 @@ export default async function(
 		..._options
 	};
 
-	options.output = join(instance.options.cwd, options.output);
+	this.instance.on('run', async function(this: Contently) {
+		const tree = await Promise.resolve(
+			options.transformer(this, {
+				...options,
+				output: join(this.options.cwd, options.output)
+			})
+		);
 
-	const tree = await Promise.resolve(options.transformer(instance, options));
-	const queue = [];
+		const queue = [];
+		for (const { path, content } of tree) {
+			const { dir } = parse(path);
+			queue.push(ensureDir(dir).then(async () => writeJson(path, content)));
+		}
 
-	for (const { path, content } of tree) {
-		const { dir } = parse(path);
-		queue.push(ensureDir(dir).then(async () => writeJson(path, content)));
-	}
-
-	await Promise.all(queue);
+		await Promise.all(queue);
+	});
 }

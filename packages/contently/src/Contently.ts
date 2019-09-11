@@ -1,13 +1,12 @@
-/* eslint-disable no-await-in-loop */
-
-import { EventEmitter } from 'events';
+import Houk from 'houk';
 import { ContentlyResult } from './ContentlyResult';
-import { ContentlyOptions, ContentlyPlugin, PluginList } from './types';
+import { ContentlyOptions, ContentlyPluginSetup } from './types';
+import { ContentlyPlugin } from './ContentlyPlugin';
 
-const slugo = require('slugo');
+const slugify: (input: string) => string = require('slugo');
 
-export class Contently extends EventEmitter {
-	public plugins: PluginList = [];
+export class Contently extends Houk {
+	public plugins: { [key: string]: ContentlyPlugin } = {};
 
 	public options: ContentlyOptions;
 
@@ -18,13 +17,26 @@ export class Contently extends EventEmitter {
 
 		this.options = {
 			cwd: process.cwd(),
-			slugify: slugo,
+			slugify,
 			...(options || {})
 		};
 	}
 
-	use(plugin: ContentlyPlugin, options?: any): Contently {
-		this.plugins.push({ plugin, options });
+	use({ name, runner }: ContentlyPluginSetup, ...options: any): Contently {
+		if (this.plugins[name]) {
+			throw new Error('Plugin is already in use.');
+		}
+
+		const plugin = new ContentlyPlugin({
+			name,
+			runner,
+			options,
+			instance: this
+		});
+
+		this.plugins[name] = plugin;
+		this.emit('afterPluginAdded', this, plugin);
+
 		return this;
 	}
 
@@ -34,7 +46,7 @@ export class Contently extends EventEmitter {
 		const array = toArray(result);
 		const promises = array.map(
 			async result =>
-				this._emit('beforeAddResult', result) as Promise<ContentlyResult>
+				this.emit('beforeAddResult', this, result) as Promise<ContentlyResult>
 		);
 
 		const results = await Promise.all(promises);
@@ -45,37 +57,10 @@ export class Contently extends EventEmitter {
 	}
 
 	async run(): Promise<Contently> {
-		await this._emit('beforeRun');
-
-		for (const { plugin, options } of this.plugins) {
-			await Promise.resolve(plugin(this, options));
-		}
-
-		await this._emit('afterRun');
+		await this.emit('beforeRun', this);
+		await this.emit('run', this);
+		await this.emit('afterRun', this);
 		return this;
-	}
-
-	/**
-	 * @name emit
-	 * @param id Event ID
-	 * @param args Arguments that will be passed along to listeners
-	 * @returns Array of potentially modified args
-	 * @description Goes over every hook listener one by one
-	 */
-	private async _emit(id: string, ...args: any): Promise<any> {
-		const listeners = this.listeners(id);
-
-		if (listeners.length === 0) {
-			return args.length === 1 ? args[0] : args;
-		}
-
-		let result: any = args;
-		for (const listener of listeners) {
-			const array = toArray(result);
-			result = (await Promise.resolve(listener.apply(this, array))) || result;
-		}
-
-		return result;
 	}
 }
 

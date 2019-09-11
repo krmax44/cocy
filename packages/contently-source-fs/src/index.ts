@@ -1,4 +1,4 @@
-import ContentlySourceFs from './ContentlySourceFs';
+import * as ContentlySourceFs from './ContentlySourceFs';
 
 export default ContentlySourceFs;
 
