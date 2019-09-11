@@ -8,8 +8,7 @@
 			"message": "chore(release): publish"
 		},
 		"version": {
-			"signGitCommit": true,
-			"createRelease": "github"
+			"signGitCommit": true
 		}
 	},
 	"version": "independent",
