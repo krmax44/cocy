@@ -58,6 +58,7 @@ export class Contently extends Houk {
 
 	async run(): Promise<Contently> {
 		await this.emit('beforeRun', this);
+		this.results = [];
 		await this.emit('run', this);
 		await this.emit('afterRun', this);
 		return this;
