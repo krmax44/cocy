@@ -8,13 +8,13 @@ The main Contently package.
 const instance = new Contently();
 ```
 
-### `instance.use(plugin: ContentlyPlugin, options?: any): Contently`
+### `instance.use(plugin: ContentlyPluginSetup, options?: any): Contently`
 
 ```ts
-type ContentlyPlugin = (this: Contently, options?: any) => any;
+type ContentlyPlugin = (this: ContentlyPlugin, options?: any) => any;
 ```
 
-The plugin function will be invoked, allowing it to register hooks.
+The plugin function will be invoked, allowing it to register hooks on `this.instance`.
 
 ### `instance.run(): Contently`
 
