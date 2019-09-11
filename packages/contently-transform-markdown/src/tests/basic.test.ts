@@ -19,14 +19,14 @@ describe('basic markdown transform', () => {
 				slug: 'hello-world',
 				attributes: { ...results[0].attributes, title: 'Hello-World' },
 				data: '<h1>Hello World</h1>\n<p>Hello from Contently!</p>\n',
-				assets: []
+				assets: {}
 			},
 			{
 				id: path.join(cwd, 'Second-Post.md'),
 				slug: 'second-post',
 				attributes: { ...results[1].attributes, title: 'Second-Post' },
 				data: '<h1>Second Post</h1>\n<p>This is the second post!</p>\n',
-				assets: []
+				assets: {}
 			}
 		]);
 	});

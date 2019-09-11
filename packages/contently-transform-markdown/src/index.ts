@@ -1,4 +1,4 @@
-import ContentlyTransformMarkdown from './ContentlyTransformMarkdown';
+import * as ContentlyTransformMarkdown from './ContentlyTransformMarkdown';
 
 export default ContentlyTransformMarkdown;
 

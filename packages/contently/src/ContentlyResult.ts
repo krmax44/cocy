@@ -8,7 +8,7 @@ interface ResultData {
 		title: string;
 		[key: string]: any;
 	};
-	assets?: string[];
+	assets?: { [key: string]: string };
 }
 
 export class ContentlyResult {
@@ -25,13 +25,13 @@ export class ContentlyResult {
 		[key: string]: any;
 	};
 
-	public assets: string[];
+	public assets: { [key: string]: string };
 
 	constructor(input: ResultData) {
 		this.id = input.id;
 		this.slug = input.slug;
 		this.data = input.data;
 		this.attributes = input.attributes;
-		this.assets = input.assets || [];
+		this.assets = input.assets || {};
 	}
 }
