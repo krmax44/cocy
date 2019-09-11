@@ -18,7 +18,7 @@
     "dev": "tsc -p ./tsconfig.json -w"
   },
   "peerDependencies": {
-    "contently": "^0.0.0"
+    "contently": "^0.3.0"
   },
   "dependencies": {
     "remark": "^11.0.1",
