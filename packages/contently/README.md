@@ -11,10 +11,10 @@ const instance = new Contently();
 ### `instance.use(plugin: ContentlyPlugin, options?: any): Contently`
 
 ```ts
-type ContentlyPlugin = (instance: Contently, options?: any) => any;
+type ContentlyPlugin = (this: Contently, options?: any) => any;
 ```
 
-The plugin function will be called once `run` is invoked. Returns `this`.
+The plugin function will be invoked, allowing it to register hooks.
 
 ### `instance.run(): Contently`
 
