@@ -25,7 +25,7 @@ interface Options {
 ## Hooks
 
 ```ts
-const md = contentlyInstance.plugins.contentlyTransformMarkdown;
+const md = contentlyInstance.plugins.transformMarkdown;
 md.on('beforeAssetAdd', url => {
 	// handle the asset, e.g. require with webpack
 	// applies to Markdown and Frontmatter assets
