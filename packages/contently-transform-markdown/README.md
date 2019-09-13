@@ -40,5 +40,7 @@ md.on('beforePlugins', plugins => {
 		plugin: myRemarkPlugin,
 		options: { addedViaHook: true }
 	});
+
+	return plugins;
 });
 ```
