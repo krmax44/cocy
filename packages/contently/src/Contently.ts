@@ -1,9 +1,8 @@
 import Houk from 'houk';
+import slugify from 'slugo';
 import { ContentlyResult } from './ContentlyResult';
 import { ContentlyOptions, ContentlyPluginSetup } from './types';
 import { ContentlyPlugin } from './ContentlyPlugin';
-
-const slugify: (input: string) => string = require('slugo');
 
 export class Contently extends Houk {
 	public plugins: { [key: string]: ContentlyPlugin } = {};

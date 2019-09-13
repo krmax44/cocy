@@ -19,6 +19,6 @@
 	},
 	"dependencies": {
 		"houk": "^1.1.1",
-		"slugo": "^0.2.3"
+		"slugo": "^0.3.1"
 	}
 }
