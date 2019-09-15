@@ -4,15 +4,15 @@
 	"useWorkspaces": true,
 	"command": {
 		"publish": {
-			"ignoreChanges": ["*.md"],
+			"ignoreChanges": [
+				"packages/*/tests/**",
+				"*.md"
+			],
 			"message": "chore(release): publish"
 		},
 		"version": {
 			"signGitCommit": true
 		}
 	},
-	"version": "independent",
-	"ignoreChanges": [
-		"packages/*/tests/**"
-	]
+	"version": "independent"
 }
