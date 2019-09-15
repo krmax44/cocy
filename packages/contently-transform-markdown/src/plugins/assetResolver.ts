@@ -29,17 +29,17 @@ export function assetResolver({ plugin }: AssetResolverOptions): any {
 			for (const asset of Object.keys(assets)) {
 				const url = assets[asset];
 				if (allAssets.has(url)) {
-					file.data.assets[asset] = allAssets.get(url);
+					file.data.$assets[asset] = allAssets.get(url);
 				} else {
 					const normalizedUrl = normalizeUrl(url, file);
 					// eslint-disable-next-line no-await-in-loop
-					file.data.assets[asset] = await plugin.emit(
+					file.data.$assets[asset] = await plugin.emit(
 						'beforeAssetAdd',
 						undefined,
 						normalizedUrl
 					);
 
-					allAssets.set(url, file.data.assets[asset]);
+					allAssets.set(url, file.data.$assets[asset]);
 				}
 			}
 		}

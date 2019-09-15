@@ -2,7 +2,7 @@ import { parse } from 'path';
 import remark from 'remark';
 import vfile from 'vfile';
 import { ContentlyPlugin } from 'contently/build/ContentlyPlugin';
-import { assetResolver } from './assetResolver';
+import { assetResolver, excerptGenerator } from './plugins';
 
 export const name = 'transformMarkdown';
 
@@ -29,7 +29,8 @@ export async function runner(
 			{ plugin: html },
 			{ plugin: frontmatter },
 			{ plugin: extract, options: { yaml } },
-			{ plugin: assetResolver, options: { plugin: this } }
+			{ plugin: assetResolver, options: { plugin: this } },
+			{ plugin: excerptGenerator }
 		],
 		..._options
 	};

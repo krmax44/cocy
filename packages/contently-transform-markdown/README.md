@@ -44,3 +44,13 @@ md.on('beforePlugins', plugins => {
 	return plugins;
 });
 ```
+
+## Built-in Remark plugins
+
+By default, the following plugins are loaded, which you can modify using hooks as shown above:
+
+- `html`: transforms Markdown to HTML
+- `frontmatter`: parses YAML frontmatter
+- `extract`: adds frontmatter data to the vfile
+- [`assetResolver`](https://github.com/krmax44/contently/blob/master/packages/contently-transform-markdown/src/plugins/assetResolver.ts): custom plugin, allows you to hook into asset loading (see above)
+- [`excerptGenerator`](https://github.com/krmax44/contently/blob/master/packages/contently-transform-markdown/src/excerptGenerator.ts): also custom, adds an excerpt to the result's attributes, which is either the frontmatter value of `excerpt`, all paragraphs before a `<!-- more -->` tag or the first paragraph of text (in that order).
