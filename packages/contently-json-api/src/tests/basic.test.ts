@@ -9,7 +9,7 @@ import 'mocha';
 
 describe('basic json api', () => {
 	it('should output all files', async () => {
-		const cwd = join(__dirname, '../../../../tests/fixtures/basic/');
+		const cwd = join(__dirname, 'fixtures/basic/');
 		const contently = new Contently({ cwd })
 			.use(ContentlySourceFs)
 			.use(ContentlyTransformMarkdown)

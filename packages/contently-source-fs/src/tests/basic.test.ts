@@ -6,7 +6,7 @@ import 'mocha';
 
 describe('basic sourcing', () => {
 	it('should source all files', async () => {
-		const cwd = path.join(__dirname, '../../../../tests/fixtures/basic/');
+		const cwd = path.join(__dirname, 'fixtures/basic/');
 		const contently = new Contently({ cwd }).use(ContentlySourceFs);
 		const { results } = await contently.run();
 
