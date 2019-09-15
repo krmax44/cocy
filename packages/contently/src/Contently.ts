@@ -1,5 +1,6 @@
 import Houk from 'houk';
 import slugify from 'slugo';
+import alwaysArray from 'always-array';
 import { ContentlyResult } from './ContentlyResult';
 import { ContentlyOptions, ContentlyPluginSetup } from './types';
 import { ContentlyPlugin } from './ContentlyPlugin';
@@ -42,7 +43,7 @@ export class Contently extends Houk {
 	async addResult(
 		result: ContentlyResult | ContentlyResult[]
 	): Promise<Contently> {
-		const array = toArray(result);
+		const array = alwaysArray(result);
 		const promises = array.map(
 			async result =>
 				this.emit('beforeAddResult', this, result) as Promise<ContentlyResult>
@@ -62,8 +63,4 @@ export class Contently extends Houk {
 		await this.emit('afterRun', this);
 		return this;
 	}
-}
-
-function toArray(input: any): any[] {
-	return Array.isArray(input) ? input : [input];
 }

@@ -1025,6 +1025,11 @@ ajv@^6.10.2, ajv@^6.5.5, ajv@^6.9.1:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+always-array@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/always-array/-/always-array-1.0.0.tgz#e445ea33de6247c069bb3af972393e13e1550e41"
+  integrity sha512-9UNV6i8q/F22W857/ajpxUOzRT0LS+TG+OWaED1Ne7LctMYMJOigfoBvFAqcpH7J/9Q5gwx1oUXMagLpBgsjYg==
+
 ansi-align@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-2.0.0.tgz#c36aeccba563b89ceb556f3690f0b1d9e3547f7f"
