@@ -20,7 +20,9 @@
 	"dependencies": {
 		"@types/fs-extra": "^8.0.0",
 		"fs-extra": "^8.1.0",
-		"globby": "^10.0.1"
+		"git-fstat": "^1.0.0",
+		"globby": "^10.0.1",
+		"is-repo": "^1.0.1"
 	},
 	"peerDependencies": {
 		"contently": "^0.3.0"

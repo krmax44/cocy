@@ -14,14 +14,22 @@ describe('basic sourcing', () => {
 			{
 				id: path.join(cwd, 'Hello-World.md'),
 				slug: 'hello-world',
-				attributes: { ...results[0].attributes, title: 'Hello-World' },
+				attributes: {
+					createdAt: new Date('2019-09-06T11:49:17.000Z'),
+					modifiedAt: new Date('2019-09-15T12:53:45.000Z'),
+					title: 'Hello-World'
+				},
 				data: '# Hello World\n\nHello from Contently!\n',
 				assets: {}
 			},
 			{
 				id: path.join(cwd, 'Second-Post.md'),
 				slug: 'second-post',
-				attributes: { ...results[1].attributes, title: 'Second-Post' },
+				attributes: {
+					createdAt: new Date('2019-09-06T11:49:17.000Z'),
+					modifiedAt: new Date('2019-09-15T12:53:45.000Z'),
+					title: 'Second-Post'
+				},
 				data: '# Second Post\n\nThis is the second post!\n',
 				assets: {}
 			}

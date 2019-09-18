@@ -18,7 +18,8 @@ describe('basic markdown transform', () => {
 				id: path.join(cwd, 'Hello-World.md'),
 				slug: 'hello-world',
 				attributes: {
-					...results[0].attributes,
+					createdAt: new Date('2019-09-06T11:49:17.000Z'),
+					modifiedAt: new Date('2019-09-15T12:54:03.000Z'),
 					title: 'Hello-World',
 					excerpt: 'Hello from Contently!'
 				},
@@ -30,7 +31,8 @@ describe('basic markdown transform', () => {
 				id: path.join(cwd, 'Second-Post.md'),
 				slug: 'second-post',
 				attributes: {
-					...results[1].attributes,
+					createdAt: new Date('2019-09-15T12:54:03.000Z'),
+					modifiedAt: new Date('2019-09-15T12:54:03.000Z'),
 					title: 'Post no 2',
 					excerpt: 'Second post!'
 				},
@@ -41,7 +43,8 @@ describe('basic markdown transform', () => {
 				id: path.join(cwd, 'Third-Post.md'),
 				slug: 'third-post',
 				attributes: {
-					...results[2].attributes,
+					createdAt: new Date('2019-09-15T12:54:03.000Z'),
+					modifiedAt: new Date('2019-09-15T12:54:03.000Z'),
 					title: 'Third-Post',
 					excerpt: 'So much content!'
 				},

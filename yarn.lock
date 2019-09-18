@@ -2947,6 +2947,11 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+git-fstat@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/git-fstat/-/git-fstat-1.0.0.tgz#b346e73fc6028e611c4ef2d30a8f68ed4bb6a1ef"
+  integrity sha512-fdj0+KMJekqftbkmuLPrXmyFUuhmy44axY4Xfs2cDQKXwkUpuLozOOyw7vUZr162HCJ8VloPs0J1Ez7j/Mg1hg==
+
 git-raw-commits@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/git-raw-commits/-/git-raw-commits-2.0.0.tgz#d92addf74440c14bcc5c83ecce3fb7f8a79118b5"
@@ -3733,6 +3738,11 @@ is-regex@^1.0.4:
   integrity sha1-VRdIm1RwkbCTDglWVM7SXul+lJE=
   dependencies:
     has "^1.0.1"
+
+is-repo@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/is-repo/-/is-repo-1.0.1.tgz#89d981cfea96a119272b03241ad4603b85cb4467"
+  integrity sha512-RwuSlvbx/ncp/E19z624kN7449+sk3mwdLBGr6XI7lE9SUU9ctJ/vK6NCEK5pAaLwsRKVpRdlip/w/6AIPyI6Q==
 
 is-retry-allowed@^1.0.0:
   version "1.1.0"
