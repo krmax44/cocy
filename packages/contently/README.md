@@ -42,10 +42,11 @@ instance.on('beforeAddResult', function(result: ContentlyResult) {
 });
 ```
 
-| Event              | Parameters    | Description                                                                |
-| ------------------ | ------------- | -------------------------------------------------------------------------- |
-| `beforeRun`        | _none_        | Fires before content is being processed.                                   |
-| `run`              | _none_        | Fires after the `before` hook is done.                                     |
-| `afterRun`         | _none_        | Fires after content was processed.                                         |
-| `beforeAddResult`  | Result to add | Fires before a new result is added.                                        |
-| `afterPluginAdded` | _none_        | Fires after a plugin was added. Return value of your hook will be ignored. |
+| Event              | Parameters    | Description                                                                    |
+| ------------------ | ------------- | ------------------------------------------------------------------------------ |
+| `beforeRun`        | _none_        | Fires before content is being processed.                                       |
+| `run`              | _none_        | Fires after the `before` hook is done.                                         |
+| `afterRun`         | _none_        | Fires after content was processed.                                             |
+| `beforeAddResult`  | Result to add | Fires before a new result is added.                                            |
+| `addResult`        | Added result. | Fires after a new result was added. Return value of your hook will be ignored. |
+| `afterPluginAdded` | _none_        | Fires after a plugin was added. Return value of your hook will be ignored.     |

@@ -53,6 +53,8 @@ export class Contently extends Houk {
 
 		this.results.push(...results);
 
+		this.emit('addResult', undefined, result);
+
 		return this;
 	}
 
