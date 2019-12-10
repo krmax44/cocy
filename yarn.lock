@@ -5553,9 +5553,9 @@ registry-url@^3.0.3:
     rc "^1.0.1"
 
 remark-extract-frontmatter@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/remark-extract-frontmatter/-/remark-extract-frontmatter-2.0.0.tgz#00246135d53261b82b7e324bf7246c4ecd03ff5c"
-  integrity sha512-P5NzoaVDiMGYjAuTfYD+6rriSVsbOpKc8CS8sd10ND+jovCzABHvUmenNo/IZIt6f9NrQxDJtFTbwEX/DJ2REg==
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/remark-extract-frontmatter/-/remark-extract-frontmatter-2.0.1.tgz#550cade3cab680a57b8e39bf13a959cca174e908"
+  integrity sha512-lmwuBn+2ylLQTlO0kX6XG2i7nJmRt+OSPmvaSymv1usjqOnyT1i5AnWmB7A7HqU9xDMzHny46Q8IlAETLbj9Cg==
   dependencies:
     xtend "^4.0.1"
 
