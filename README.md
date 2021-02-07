@@ -1,6 +1,6 @@
 # Contently
 
-[[![CI status](https://img.shields.io/github/workflow/status/krmax44/contently/build/master)](https://github.com/krmax44/contently/actions/new)](https://github.com/krmax44/contently/actions)
+[![CI status](https://img.shields.io/github/workflow/status/krmax44/contently/build/master)](https://github.com/krmax44/contently/actions)
 [![Code coverage](https://img.shields.io/codecov/c/github/krmax44/contently?token=RcYyQnebV1)](https://codecov.io/gh/krmax44/contently)
 [![npm version](https://img.shields.io/npm/v/contently)](https://www.npmjs.com/package/contently)
 
