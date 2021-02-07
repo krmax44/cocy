@@ -1,0 +1,23 @@
+{
+  "name": "contently-render-json",
+  "version": "1.0.0",
+  "license": "MIT",
+  "files": [
+    "build"
+  ],
+  "main": "./build/ContentlyRenderJSON.js",
+  "types": "./build/ContentlyRenderJSON.d.ts",
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "author": "krmax44<hi@krmax44.de>",
+  "repository": {
+    "url": "https://github.com/krmax44/contently.git",
+    "type": "git",
+    "directory": "packages/contently-transform-markdown"
+  },
+  "peerDependencies": {
+    "contently": "^1.0.0"
+  }
+}

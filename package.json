@@ -1,29 +1,13 @@
 {
-  "name": "contently-new",
-  "version": "1.0.0",
+  "private": true,
+  "author": "krmax44 <hi@krmax44.de>",
   "license": "MIT",
-  "files": [
-    "build"
-  ],
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "workspaces": ["packages/*"],
   "scripts": {
-    "dev": "tsc -w",
-    "build": "tsc",
     "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "xo",
-    "ci": "yarn lint && yarn test"
-  },
-  "author": "krmax44<hi@krmax44.de>",
-  "repository": {
-    "url": "https://github.com/krmax44/contently.git",
-    "type": "git",
-    "directory": "packages/contently-transform-markdown"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "arrowParens": "avoid",
-    "trailingComma": "none"
+    "build": "lerna run build"
   },
   "xo": {
     "extends": [
@@ -35,6 +19,11 @@
     ],
     "prettier": true
   },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "none"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
@@ -43,22 +32,10 @@
     "babel-jest": "^26.6.3",
     "husky": "^4.3.8",
     "jest": "^26.6.3",
+    "lerna": "^3.22.1",
     "prettier": "^2.2.1",
     "typescript": "^4.1.3",
+    "waait": "^1.0.5",
     "xo": "^0.37.1"
-  },
-  "dependencies": {
-    "chokidar": "^3.5.1",
-    "git-fstat": "^1.0.0",
-    "globby": "^11.0.2",
-    "is-repo": "^1.0.1",
-    "remark": "^13.0.0",
-    "remark-extract-frontmatter": "^3.1.0",
-    "remark-frontmatter": "^3.0.0",
-    "remark-html": "^13.0.1",
-    "slugo": "^0.3.1",
-    "unist-util-visit": "^2.0.3",
-    "vfile": "^4.2.1",
-    "yaml": "^1.10.0"
   }
 }
