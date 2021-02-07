@@ -22,7 +22,8 @@
     "rules": {
       "unicorn/filename-case": "off",
       "no-await-in-loop": "off",
-      "@typescript-eslint/no-floating-promises": "off"
+      "@typescript-eslint/no-floating-promises": "off",
+      "capitalized-comments": "off"
     },
     "prettier": true
   },
