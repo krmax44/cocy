@@ -19,5 +19,8 @@
   },
   "peerDependencies": {
     "contently": "^1.0.0"
+  },
+  "devDependencies": {
+    "waait": "^1.0.5"
   }
 }

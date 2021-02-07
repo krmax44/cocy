@@ -2,11 +2,11 @@
 
 import visit from 'unist-util-visit';
 import alwaysArray from 'always-array';
-import { Node } from 'unist'; // eslint-disable-line import/no-unresolved
+import { Node } from 'unist';
 import { VFile } from 'vfile';
 
-const isComment = new RegExp('<!--(.*?)-->');
-const getComment = new RegExp('<!--([\\s\\S]*?)-->');
+const isComment = /<!--(.*?)-->'/;
+const getComment = /'<!--([\\sS]*?)-->'/;
 
 interface Options {
 	identifier?: string;
@@ -17,12 +17,11 @@ interface Html extends Node {
 }
 
 export function excerptGenerator(options: Options): any {
-	return function(tree: Node, file: VFile) {
+	return function (tree: Node, file: VFile) {
 		if (!(file.data as any).excerpt) {
-			const excerpts =
-				options && options.identifier
-					? alwaysArray(options.identifier)
-					: ['excerpt', 'more', 'preview', 'teaser'];
+			const excerpts = options?.identifier
+				? alwaysArray(options.identifier)
+				: ['excerpt', 'more', 'preview', 'teaser'];
 
 			let excerptIndex = -1;
 			const treeChildren = [...(tree.children as Node[])];

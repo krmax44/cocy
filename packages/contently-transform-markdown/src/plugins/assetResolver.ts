@@ -4,7 +4,7 @@ import { Node } from 'unist';
 import { VFile } from 'vfile';
 
 interface AssetResolverOptions {
-	assetHandler: (asset: string, file: string) => string | Promise<string>
+	assetHandler: (asset: string, file: string) => string | Promise<string>;
 }
 
 interface Image extends Node {
@@ -15,16 +15,16 @@ interface Image extends Node {
 }
 
 interface AssetVFile extends VFile {
-	data: { [key: string]: any };
+	data: Record<string, any>;
 }
 
 export function assetResolver({ assetHandler }: AssetResolverOptions): any {
-	return async function(tree: Node, file: AssetVFile, next: () => void) {
+	return async function (tree: Node, file: AssetVFile, next: () => void) {
 		const allAssets = new Map();
 
 		if (file.data.assets) {
 			const { assets } = file.data;
-			file.data.$assets = {}
+			file.data.$assets = {};
 
 			for (const asset of Object.keys(assets)) {
 				const url = assets[asset];
@@ -32,7 +32,9 @@ export function assetResolver({ assetHandler }: AssetResolverOptions): any {
 					file.data.$assets[asset] = allAssets.get(url);
 				} else {
 					const normalizedUrl = normalizeUrl(url, file);
-					file.data.$assets[asset] = await Promise.resolve(assetHandler(normalizedUrl, file.path!));
+					file.data.$assets[asset] = await Promise.resolve(
+						assetHandler(normalizedUrl, file.path!)
+					);
 
 					allAssets.set(url, file.data.$assets[asset]);
 				}
@@ -45,11 +47,12 @@ export function assetResolver({ assetHandler }: AssetResolverOptions): any {
 			if (allAssets.has(node.url)) {
 				node.url = allAssets.get(node.url);
 			} else {
-				const promise = Promise.resolve(assetHandler(normalizeUrl(node.url!, file), file.path!))
-					.then(url => {
-						allAssets.set(node.url, url);
-						node.url = url;
-					});
+				const promise = Promise.resolve(
+					assetHandler(normalizeUrl(node.url!, file), file.path!)
+				).then(url => {
+					allAssets.set(node.url, url);
+					node.url = url;
+				});
 
 				queue.push(promise);
 			}

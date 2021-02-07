@@ -5,27 +5,27 @@
 export type ContentlyPath = string;
 
 export interface ContentlyFile {
-  path: ContentlyPath;
+	path: ContentlyPath;
 
-  /**
-   * Slug of the file
-   * @name slug
-   */
-  slug: string;
+	/**
+	 * Slug of the file
+	 * @name slug
+	 */
+	slug: string;
 
-  /**
-   * File contents
-   * @name data
-   */
-  data: string;
+	/**
+	 * File contents
+	 * @name data
+	 */
+	data: string;
 
-  /**
-   * File attributes
-   * @name attributes
-   */
-  attributes: {
-    createdAt: Date;
-    modifiedAt: Date;
-    [k: string]: any;
-  };
+	/**
+	 * File attributes
+	 * @name attributes
+	 */
+	attributes: {
+		[key: string]: any;
+		createdAt: Date;
+		modifiedAt: Date;
+	};
 }

@@ -11,55 +11,55 @@ import { assetResolver, excerptGenerator } from './plugins';
 import Contently from 'contently';
 
 interface Options {
-  /**
-   * An array of Remark plugins.
-   * @name plugins
-   * @default 'html,frontmatter,extract-frontmatter'
-   */
-  plugins?: Array<{ plugin: any; options?: any }>;
+	/**
+	 * An array of Remark plugins.
+	 * @name plugins
+	 * @default 'html,frontmatter,extract-frontmatter'
+	 */
+	plugins?: Array<{ plugin: any; options?: any }>;
 }
 
 export default async function ContentlyTransformMarkdown(
-  instance: Contently,
-  _options: Options
+	instance: Contently,
+	_options: Options
 ): Promise<void> {
-  const options = {
-    plugins: [
-      { plugin: html },
-      { plugin: frontmatter },
-      { plugin: extract, options: { yaml: yaml.parse } },
-      { plugin: assetResolver, options: { assetHandler: (a: string) => a } },
-      { plugin: excerptGenerator }
-    ],
-    ...(_options || {})
-  };
+	const options = {
+		plugins: [
+			{ plugin: html },
+			{ plugin: frontmatter },
+			{ plugin: extract, options: { yaml: yaml.parse } },
+			{ plugin: assetResolver, options: { assetHandler: (a: string) => a } },
+			{ plugin: excerptGenerator }
+		],
+		...(_options || {})
+	};
 
-  instance.on('addFile', async file => {
-    const r = remark();
+	instance.on('addFile', async file => {
+		const r = remark();
 
-    for (const { plugin, options: opts } of options.plugins) {
-      r.use(plugin, opts);
-    }
+		for (const { plugin, options: options_ } of options.plugins) {
+			r.use(plugin, options_);
+		}
 
-    const { base: basename, name: stem, ext: extname, dir: dirname } = parse(
-      file.path
-    );
+		const { base: basename, name: stem, ext: extname, dir: dirname } = parse(
+			file.path
+		);
 
-    const v = vfile({
-      contents: file.data,
-      cwd: instance.options.cwd,
-      basename,
-      stem,
-      extname,
-      dirname
-    });
+		const v = vfile({
+			contents: file.data,
+			cwd: instance.options.cwd,
+			basename,
+			stem,
+			extname,
+			dirname
+		});
 
-    const { data, contents } = await r.process(v);
+		const { data, contents } = await r.process(v);
 
-    file.data = contents as string;
-    file.attributes = {
-      ...file.attributes,
-      ...((data as Object) || {})
-    };
-  });
+		file.data = contents as string;
+		file.attributes = {
+			...file.attributes,
+			...((data as Record<string, unknown>) || {})
+		};
+	});
 }

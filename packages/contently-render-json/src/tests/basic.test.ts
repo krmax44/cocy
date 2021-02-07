@@ -7,20 +7,20 @@ import wait from 'waait';
 const cwd = path.resolve(__dirname, 'fixture', 'input');
 
 describe('ContentlyRenderJSON', () => {
-  test('renders all files', async () => {
-    const contently = new Contently({ cwd }).use(ContentlyRenderJSON);
-    await contently.find();
+	test('renders all files', async () => {
+		const contently = new Contently({ cwd }).use(ContentlyRenderJSON);
+		await contently.find();
 
-    await wait(200);
+		await wait(200);
 
-    const outfile = path.join(cwd, '..', 'contently', 'test.json');
+		const outfile = path.join(cwd, '..', 'contently', 'test.json');
 
-    const json = await fs.readFile(outfile, { encoding: 'utf-8' });
+		const json = await fs.readFile(outfile, { encoding: 'utf-8' });
 
-    const data = JSON.parse(json);
+		const data = JSON.parse(json);
 
-    expect(data.data).toBe('test\n');
-    expect(data.slug).toBe('test');
-    expect(data.path).toBe(path.join(cwd, 'test.md'));
-  });
+		expect(data.data).toBe('test\n');
+		expect(data.slug).toBe('test');
+		expect(data.path).toBe(path.join(cwd, 'test.md'));
+	});
 });

@@ -24,5 +24,8 @@
     "houk": "^3.0.2",
     "is-repo": "^1.0.1",
     "slugo": "^0.3.1"
+  },
+  "devDependencies": {
+    "waait": "^1.0.5"
   }
 }
