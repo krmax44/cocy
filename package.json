@@ -6,10 +6,11 @@
     "packages/*"
   ],
   "scripts": {
+    "pretest": "yarn build",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "xo",
-    "build": "lerna run build"
+    "build": "yarn --cwd packages/contently build && lerna run build --scope contently-*"
   },
   "xo": {
     "extends": [
