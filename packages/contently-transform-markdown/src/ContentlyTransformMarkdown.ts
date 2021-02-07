@@ -36,6 +36,7 @@ export default async function ContentlyTransformMarkdown(
 		...(_options || {})
 	};
 
+	// TODO: handle other events
 	instance.on('fileAdded', async file => {
 		const r = remark();
 

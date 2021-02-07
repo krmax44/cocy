@@ -13,6 +13,14 @@ Contently takes your content and turns it into a consumable API for your [JAMsta
 - fast performance
 - easily approachable
 
+## Roadmap to v1
+
+see [TODO](https://github.com/krmax44/contently/search?q=TODO) in code, also:
+
+- [ ] examples with frameworks, like Ream or Nuxt
+- [ ] better docs
+- [ ] extensive testing
+
 ## Example
 
 ```

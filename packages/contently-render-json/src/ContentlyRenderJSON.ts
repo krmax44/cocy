@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import Contently, { ContentlyFile } from 'contently';
 
+// TODO: implement "fields" option to only select what you need
 interface Options {
 	/**
 	 * Output directory for built JSON files

@@ -6,6 +6,8 @@ import wait from 'waait';
 
 const cwd = path.resolve(__dirname, 'fixture', 'input');
 
+// TODO: more extensive tests
+
 describe('ContentlyRenderJSON', () => {
 	test('renders all files', async () => {
 		const contently = new Contently({ cwd }).use(ContentlyRenderJSON);
