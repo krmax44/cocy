@@ -1,4 +1,4 @@
-import { join } from 'path';
+import path from 'path';
 import visit from 'unist-util-visit';
 import { Node } from 'unist';
 import { VFile } from 'vfile';
@@ -24,19 +24,19 @@ export function assetResolver({ assetHandler }: AssetResolverOptions): any {
 
 		if (file.data.assets) {
 			const { assets } = file.data;
-			file.data.$assets = {};
 
 			for (const asset of Object.keys(assets)) {
 				const url = assets[asset];
+
 				if (allAssets.has(url)) {
-					file.data.$assets[asset] = allAssets.get(url);
+					file.data.assets[asset] = allAssets.get(url);
 				} else {
 					const normalizedUrl = normalizeUrl(url, file);
-					file.data.$assets[asset] = await Promise.resolve(
+					file.data.assets[asset] = await Promise.resolve(
 						assetHandler(normalizedUrl, file.path!)
 					);
 
-					allAssets.set(url, file.data.$assets[asset]);
+					allAssets.set(url, file.data.assets[asset]);
 				}
 			}
 		}
@@ -65,9 +65,5 @@ export function assetResolver({ assetHandler }: AssetResolverOptions): any {
 }
 
 function normalizeUrl(url: string, file: VFile): string {
-	if (url.startsWith('./') || url.startsWith('../')) {
-		return join(file.dirname!, url);
-	}
-
-	return url;
+	return path.resolve(file.path!, url);
 }

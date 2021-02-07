@@ -28,9 +28,9 @@ export default async function ContentlyRenderJSON(
 		await fs.mkdir(outDir);
 	}
 
-	instance.on('addFile', renderFile);
-	instance.on('updateFile', renderFile);
-	instance.on('removeFile', removeFile);
+	instance.on('fileAdded', renderFile);
+	instance.on('fileUpdated', renderFile);
+	instance.on('fileRemoved', removeFile);
 
 	function determineLocation(file: ContentlyFile) {
 		const relativePath = path.relative(instance.options.cwd, file.path);

@@ -24,14 +24,9 @@ describe('ContentlyFiles', () => {
 		await files.find();
 		const file = files.files.get(TEST_FILE);
 
-		expect(file).toEqual({
-			path: TEST_FILE,
-			data: 'Test!\n',
-			attributes: {
-				createdAt: new Date('2021-02-07T16:37:42.000Z'),
-				modifiedAt: new Date('2021-02-07T16:37:42.000Z')
-			}
-		});
+		expect(file.path).toBe(TEST_FILE);
+		expect(file.data).toBe('Test!\n');
+		expect(file.slug).toBe('test');
 		expect(files.files.has(TEST_FILE_DEEP)).toBe(true);
 	});
 

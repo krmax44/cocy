@@ -5,3 +5,4 @@ build
 Thumbs.db
 .vscode
 *.tmp.md
+coverage

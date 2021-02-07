@@ -14,7 +14,7 @@ export interface ContentlyOptions {
 	watch: boolean;
 
 	/**
-	 * A function that slugifies a given input.L0
+	 * A function that slugifies a given input.
 	 * @name slugify
 	 * @default slugo
 	 */

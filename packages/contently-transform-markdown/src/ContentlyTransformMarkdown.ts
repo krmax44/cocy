@@ -23,6 +23,8 @@ export default async function ContentlyTransformMarkdown(
 	instance: Contently,
 	_options: Options
 ): Promise<void> {
+	// TODO: this sucks to edit as a user
+
 	const options = {
 		plugins: [
 			{ plugin: html },
@@ -34,7 +36,7 @@ export default async function ContentlyTransformMarkdown(
 		...(_options || {})
 	};
 
-	instance.on('addFile', async file => {
+	instance.on('fileAdded', async file => {
 		const r = remark();
 
 		for (const { plugin, options: options_ } of options.plugins) {
@@ -63,3 +65,5 @@ export default async function ContentlyTransformMarkdown(
 		};
 	});
 }
+
+export * from './plugins';

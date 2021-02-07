@@ -17,22 +17,22 @@ export type ContentlyEvents = {
 	/**
 	 * Triggered when a new file was added.
 	 */
-	addFile: [file: ContentlyFile];
+	fileAdded: [file: ContentlyFile];
 
 	/**
 	 * Triggered when a file was removed.
 	 */
-	removeFile: [file: ContentlyFile];
+	fileRemoved: [file: ContentlyFile];
 
 	/**
 	 * Triggered when a file's content changed.
 	 */
-	updateFile: [file: ContentlyFile];
+	fileUpdated: [file: ContentlyFile];
 
 	/**
 	 * Triggered when any file event occured (added, deleted...)
 	 */
-	changeFile: [file: ContentlyFile];
+	fileChanged: [file: ContentlyFile];
 };
 
 export default class Contently extends Houk<ContentlyEvents> {
@@ -54,6 +54,9 @@ export default class Contently extends Houk<ContentlyEvents> {
 			slugify,
 			...(options ?? {})
 		};
+
+		// make sure it's absolute
+		this.options.cwd = path.resolve(cwd, this.options.cwd);
 
 		this.files = new Map();
 
@@ -101,8 +104,14 @@ export default class Contently extends Houk<ContentlyEvents> {
 				attributes
 			};
 
+			if (this.files.has(filepath)) {
+				this.emit('fileUpdated', file);
+			} else {
+				this.emit('fileAdded', file);
+			}
+
 			this.files.set(filepath, file);
-			this.emit('addFile', file);
+			this.emit('fileChanged', file);
 		} catch {
 			throw new Error(`Could not read file ${filepath}`);
 		}
@@ -115,7 +124,8 @@ export default class Contently extends Houk<ContentlyEvents> {
 	public remove(filepath: ContentlyPath) {
 		const file = this.files.get(filepath);
 		if (file) {
-			this.emit('removeFile', file);
+			this.emit('fileRemoved', file);
+			this.emit('fileChanged', file);
 			this.files.delete(filepath);
 		}
 	}
