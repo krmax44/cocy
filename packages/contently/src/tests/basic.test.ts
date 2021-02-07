@@ -15,7 +15,7 @@ function makeInstance() {
 
 describe('ContentlyFiles', () => {
 	const files = makeInstance();
-	files.watch();
+	files.startWatcher();
 
 	test('finds all files', async () => {
 		await fs.mkdir(TEST_FOLDER);
@@ -55,5 +55,9 @@ describe('ContentlyFiles', () => {
 		await wait(200);
 
 		expect(files.files.has(TEST_FILE_DEEP)).toBe(false);
+	});
+
+	afterAll(() => {
+		files.stopWatcher();
 	});
 });

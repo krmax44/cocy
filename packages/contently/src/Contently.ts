@@ -55,6 +55,8 @@ export default class Contently extends Houk<ContentlyEvents> {
 			...(options ?? {})
 		};
 
+		if (this.options.watch) this.startWatcher();
+
 		// make sure it's absolute
 		this.options.cwd = path.resolve(cwd, this.options.cwd);
 
@@ -140,7 +142,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 		}
 	}
 
-	public watch() {
+	public startWatcher() {
 		const { cwd, patterns } = this.options;
 
 		this.watcher = chokidar.watch(patterns, { cwd });
@@ -160,6 +162,10 @@ export default class Contently extends Houk<ContentlyEvents> {
 		listen('addDir', this.find);
 		listen('unlink', this.remove);
 		listen('unlinkDir', this.removeDir);
+	}
+
+	public stopWatcher() {
+		this.watcher?.close();
 	}
 
 	public use(
