@@ -1,3 +1,5 @@
+import { ContentlyResolvedAsset } from './ContentlyAsset';
+
 /**
  * Absolute path to a file.
  * @name ContentlyPath
@@ -28,4 +30,9 @@ export interface ContentlyFile {
 		createdAt: Date;
 		modifiedAt: Date;
 	};
+
+	/**
+	 * Resolved assets.
+	 */
+	assets: Map<string, ContentlyResolvedAsset>;
 }

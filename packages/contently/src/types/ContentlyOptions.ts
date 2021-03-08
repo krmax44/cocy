@@ -1,4 +1,13 @@
+import { ContentlyAssetHandler } from './ContentlyAsset';
+
 export interface ContentlyOptions {
+	/**
+	 * Glob patterns for files
+	 * @name patterns
+	 * @default "['*.md', '*.markdown', '*.mdwn', '!.*', '!_*']"
+	 */
+	patterns: string[];
+
 	/**
 	 * The current working directory.
 	 * @name cwd
@@ -14,16 +23,16 @@ export interface ContentlyOptions {
 	watch: boolean;
 
 	/**
+	 * Handle a newly found asset. Return the transformed asset url.
+	 * @name assetHandler
+	 * @default undefined
+	 */
+	assetHandler?: ContentlyAssetHandler;
+
+	/**
 	 * A function that slugifies a given input.
 	 * @name slugify
 	 * @default slugo
 	 */
 	slugify: (input: string) => string;
-
-	/**
-	 * Glob patterns for files
-	 * @name patterns
-	 * @default "['*.md', '*.markdown', '*.mdwn', '!.*', '!_*']"
-	 */
-	patterns: string[];
 }

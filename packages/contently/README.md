@@ -10,37 +10,7 @@ const contently = new Contently(options?);
 
 ## Options
 
-```ts
-export interface ContentlyOptions {
-	/**
-	 * The current working directory.
-	 * @name cwd
-	 * @default process.cwd()
-	 */
-	cwd: string;
-
-	/**
-	 * Watch files and rebuild on change
-	 * @name watch
-	 * @default "process.env.NODE_ENV === 'development'"
-	 */
-	watch: boolean;
-
-	/**
-	 * A function that slugifies a given input.
-	 * @name slugify
-	 * @default slugo
-	 */
-	slugify: (input: string) => string;
-
-	/**
-	 * Glob patterns for files
-	 * @name patterns
-	 * @default "['*.md', '*.markdown', '*.mdwn', '!.*', '!_*']"
-	 */
-	patterns: string[];
-}
-```
+See [`ContentlyOptions.ts`](./src/types/ContentlyOptions.ts).
 
 ## API
 
@@ -54,7 +24,7 @@ The plugin function will be invoked, allowing it to register hooks on the instan
 
 ### `contently.find()`
 
-Search for files and add them. Returns a promise.
+Search for files and add them. Promise is fulfilled, once all files have been found and transformed by registered plugins.
 
 ## Events
 

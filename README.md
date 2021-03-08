@@ -34,7 +34,7 @@ see [TODO](https://github.com/krmax44/contently/search?q=TODO) in code, also:
 import Contently from 'contently';
 import ContentlyTransformMarkdown from 'contently-transform-markdown';
 
-const contently = await new Contently({ cwd: './posts' })
+const contently = await new Contently({ patterns: ['./posts/**/*.md'] })
 	.use(ContentlyTransformMarkdown)
 	.find();
 

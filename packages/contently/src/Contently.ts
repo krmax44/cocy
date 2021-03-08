@@ -12,6 +12,7 @@ import slugify from 'slugo';
 import { PATTERNS } from './utils/consts';
 import { ContentlyOptions } from './types/ContentlyOptions';
 import { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
+import { ContentlyResolvedAsset } from './types/ContentlyAsset';
 
 export type ContentlyEvents = {
 	/**
@@ -52,7 +53,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 			watch,
 			patterns: PATTERNS,
 			slugify,
-			...(options ?? {})
+			...options
 		};
 
 		if (this.options.watch) this.startWatcher();
@@ -72,7 +73,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 	 * @param cwd Directory to search files in
 	 * @default cwd Contently instance cwd
 	 */
-	async find(cwd = this.options.cwd) {
+	async find(cwd = this.options.cwd): Promise<Contently> {
 		const files = globby.stream(this.options.patterns, { cwd });
 		const queue = [];
 
@@ -86,6 +87,8 @@ export default class Contently extends Houk<ContentlyEvents> {
 		}
 
 		await Promise.all(queue);
+
+		return this;
 	}
 
 	/**
@@ -98,22 +101,24 @@ export default class Contently extends Houk<ContentlyEvents> {
 			const data = await readFile(filepath, 'utf8');
 			const attributes = await fstat(filepath, isGitRepo);
 			const slug = slugify(path.parse(filepath).name);
+			const assets = new Map();
 
-			const file = {
+			const file: ContentlyFile = {
 				path: filepath,
 				data,
 				slug,
-				attributes
+				attributes,
+				assets
 			};
 
 			if (this.files.has(filepath)) {
-				this.emit('fileUpdated', file);
+				await this.emit('fileUpdated', file);
 			} else {
-				this.emit('fileAdded', file);
+				await this.emit('fileAdded', file);
 			}
 
 			this.files.set(filepath, file);
-			this.emit('fileChanged', file);
+			await this.emit('fileChanged', file);
 		} catch {
 			throw new Error(`Could not read file ${filepath}`);
 		}
@@ -168,9 +173,23 @@ export default class Contently extends Houk<ContentlyEvents> {
 		this.watcher?.close();
 	}
 
-	public use(
+	public async resolveAsset(
+		asset: ContentlyResolvedAsset,
+		file: ContentlyFile,
+		key?: string
+	) {
+		const { assetHandler } = this.options;
+		if (!assetHandler) return false;
+		const resolved = await Promise.resolve(assetHandler(asset, file));
+
+		if (key) file.assets.set(key, resolved);
+
+		return resolved;
+	}
+
+	public use<PluginOptions extends any[]>(
 		plugin: (instance: Contently, ...args: any) => void,
-		...options: any
+		...options: PluginOptions
 	) {
 		plugin(this, ...options);
 		return this;
@@ -178,3 +197,4 @@ export default class Contently extends Houk<ContentlyEvents> {
 }
 
 export { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
+export { ContentlyAssetHandler } from './types/ContentlyAsset';

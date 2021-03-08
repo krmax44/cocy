@@ -9,18 +9,18 @@ const isComment = /<!--(.*?)-->'/;
 const getComment = /'<!--([\\sS]*?)-->'/;
 
 interface Options {
-	identifier?: string;
+	identifiers?: string | string[];
 }
 
 interface Html extends Node {
 	value: string;
 }
 
-export function excerptGenerator(options: Options): any {
+export function excerptGenerator(options?: Options): any {
 	return function (tree: Node, file: VFile) {
 		if (!(file.data as any).excerpt) {
-			const excerpts = options?.identifier
-				? alwaysArray(options.identifier)
+			const identifiers = options?.identifiers
+				? alwaysArray(options.identifiers)
 				: ['excerpt', 'more', 'preview', 'teaser'];
 
 			let excerptIndex = -1;
@@ -33,7 +33,7 @@ export function excerptGenerator(options: Options): any {
 					if (comment) {
 						const text = comment[1].trim();
 
-						if (excerpts.includes(text)) {
+						if (identifiers.includes(text)) {
 							excerptIndex = treeChildren.indexOf(node);
 						}
 					}
