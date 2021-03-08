@@ -15,7 +15,7 @@
   "repository": {
     "url": "https://github.com/krmax44/contently.git",
     "type": "git",
-    "directory": "packages/contently-transform-markdown"
+    "directory": "packages/contently-render-json"
   },
   "peerDependencies": {
     "contently": "^1.0.0"
