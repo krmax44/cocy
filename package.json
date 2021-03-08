@@ -6,27 +6,32 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "lerna bootstrap",
     "pretest": "yarn build",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "xo",
+    "lint": "eslint --ignore-path .gitignore .",
     "build": "yarn --cwd packages/contently build && lerna run build --scope contently-*"
   },
-  "xo": {
+  "eslintConfig": {
+    "root": true,
+    "ignorePatterns": "*.config.js",
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "prettier"
+    ],
     "extends": [
-      "xo-typescript",
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
       "plugin:prettier/recommended"
     ],
-    "extensions": [
-      "ts"
-    ],
     "rules": {
-      "unicorn/filename-case": "off",
       "no-await-in-loop": "off",
+      "capitalized-comments": "off",
       "@typescript-eslint/no-floating-promises": "off",
-      "capitalized-comments": "off"
-    },
-    "prettier": true
+      "@typescript-eslint/no-explicit-any": "off"
+    }
   },
   "prettier": {
     "singleQuote": true,
@@ -40,13 +45,17 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-typescript": "^7.12.13",
     "@types/jest": "^26.0.20",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
     "babel-jest": "^26.6.3",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "globby": "^11.0.2",
     "husky": "^4.3.8",
     "jest": "^26.6.3",
     "lerna": "^3.22.1",
     "prettier": "^2.2.1",
-    "typescript": "^4.1.3",
-    "xo": "^0.37.1"
+    "typescript": "^4.1.3"
   }
 }

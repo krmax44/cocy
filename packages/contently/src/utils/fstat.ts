@@ -12,7 +12,7 @@ export default async function fstats(
 			const { createdAt, modifiedAt } = await gitFstat(path);
 			if (createdAt) return { createdAt, modifiedAt };
 		}
-	} catch {}
+	} catch {} // eslint-disable-line no-empty
 
 	const { birthtime: createdAt, mtime: modifiedAt } = await stat(path);
 	return { createdAt, modifiedAt };

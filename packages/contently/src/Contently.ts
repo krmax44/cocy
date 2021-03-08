@@ -94,7 +94,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 	/**
 	 * Add or update file
 	 */
-	public async add(filepath: ContentlyPath) {
+	public async add(filepath: ContentlyPath): Promise<void> {
 		const { isGitRepo } = this;
 
 		try {
@@ -128,16 +128,17 @@ export default class Contently extends Houk<ContentlyEvents> {
 	 * Remove file
 	 * @returns True on success, false if file didn't exist
 	 */
-	public remove(filepath: ContentlyPath) {
+	public remove(filepath: ContentlyPath): boolean {
 		const file = this.files.get(filepath);
 		if (file) {
 			this.emit('fileRemoved', file);
 			this.emit('fileChanged', file);
-			this.files.delete(filepath);
+			return this.files.delete(filepath);
 		}
+		return false;
 	}
 
-	public removeDir(dirpath: ContentlyPath) {
+	public removeDir(dirpath: ContentlyPath): void {
 		for (const file of this.files.keys()) {
 			const { dir } = path.parse(file);
 
@@ -147,7 +148,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 		}
 	}
 
-	public startWatcher() {
+	public startWatcher(): void {
 		const { cwd, patterns } = this.options;
 
 		this.watcher = chokidar.watch(patterns, { cwd });
@@ -169,7 +170,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 		listen('unlinkDir', this.removeDir);
 	}
 
-	public stopWatcher() {
+	public stopWatcher(): void {
 		this.watcher?.close();
 	}
 
@@ -177,7 +178,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 		asset: ContentlyResolvedAsset,
 		file: ContentlyFile,
 		key?: string
-	) {
+	): Promise<ContentlyResolvedAsset | false> {
 		const { assetHandler } = this.options;
 		if (!assetHandler) return false;
 		const resolved = await Promise.resolve(assetHandler(asset, file));
@@ -190,7 +191,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 	public use<PluginOptions extends any[]>(
 		plugin: (instance: Contently, ...args: any) => void,
 		...options: PluginOptions
-	) {
+	): Contently {
 		plugin(this, ...options);
 		return this;
 	}

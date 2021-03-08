@@ -20,7 +20,7 @@ interface Options {
 export default async function ContentlyRenderJSON(
 	instance: Contently,
 	options: Options = {}
-) {
+): Promise<void> {
 	const outDir =
 		options?.outDir ?? path.resolve(instance.options.cwd, '..', 'contently');
 
@@ -54,6 +54,6 @@ export default async function ContentlyRenderJSON(
 		try {
 			const { filepath } = determineLocation(file);
 			fs.unlink(filepath);
-		} catch {}
+		} catch {} // eslint-disable-line no-empty
 	}
 }
