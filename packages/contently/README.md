@@ -12,7 +12,20 @@ const contently = new Contently(options?);
 
 See [`ContentlyOptions.ts`](./src/types/ContentlyOptions.ts).
 
-## API
+## Files
+
+Files are stored as a map at `contently.files`. You can for example get a file by its absolute path using `contently.files.get(absolutePath)`.
+
+The properties of each file object are described [here](./src/types/ContentlyFile.ts).
+
+```ts
+// it's a map - don't forget `values`
+for (const file of contently.files.values()) {
+	console.log(file.attributes.title);
+}
+```
+
+## Methods
 
 ### `contently.use()`
 
