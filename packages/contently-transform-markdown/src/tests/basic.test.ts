@@ -5,13 +5,11 @@ import ContentlyTransformMarkdown from '../ContentlyTransformMarkdown';
 describe('ContentlyTransformMarkdown', () => {
 	it('should transform all files', async () => {
 		const cwd = path.join(__dirname, 'fixtures/basic/');
-		const assetHandler: AssetHandler = () => {
-			return 'foo';
-		};
 
-		const contently = new Contently({ cwd, assetHandler }).use(
-			ContentlyTransformMarkdown
-		);
+		const contently = new Contently({ cwd }).use(ContentlyTransformMarkdown);
+
+		contently.on('assetAdded', resolve => resolve('foo'));
+
 		await contently.find();
 
 		const first = path.join(cwd, 'Hello-World.md');
