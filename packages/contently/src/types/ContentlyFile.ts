@@ -1,5 +1,3 @@
-import { ContentlyResolvedAsset } from './ContentlyAsset';
-
 /**
  * Absolute path to a file.
  * @name ContentlyPath
@@ -34,5 +32,5 @@ export interface ContentlyFile {
 	/**
 	 * Resolved assets.
 	 */
-	assets: Map<string, ContentlyResolvedAsset>;
+	assets: Map<string, string>;
 }

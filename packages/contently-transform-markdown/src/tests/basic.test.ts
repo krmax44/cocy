@@ -1,5 +1,5 @@
 import path from 'path';
-import Contently, { AssetHandler } from 'contently';
+import Contently from 'contently';
 import ContentlyTransformMarkdown from '../ContentlyTransformMarkdown';
 
 describe('ContentlyTransformMarkdown', () => {

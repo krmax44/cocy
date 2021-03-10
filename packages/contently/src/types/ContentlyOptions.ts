@@ -1,5 +1,3 @@
-import { ContentlyAssetHandler } from './ContentlyAsset';
-
 export interface ContentlyOptions {
 	/**
 	 * Glob patterns for files

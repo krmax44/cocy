@@ -12,7 +12,6 @@ import slugify from 'slugo';
 import { PATTERNS } from './utils/consts';
 import { ContentlyOptions } from './types/ContentlyOptions';
 import { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
-import { ContentlyResolvedAsset } from './types/ContentlyAsset';
 import { ContentlyEvents } from './types/ContentlyEvents';
 
 export default class Contently extends Houk<ContentlyEvents> {
@@ -163,7 +162,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 		assetPath: string,
 		file: ContentlyFile,
 		key?: string
-	): Promise<ContentlyResolvedAsset> {
+	): Promise<string> {
 		const hasAssetHandler = this.getListeners('assetAdded').size > 0;
 		if (!hasAssetHandler) return assetPath;
 
@@ -186,4 +185,3 @@ export default class Contently extends Houk<ContentlyEvents> {
 }
 
 export { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
-export { ContentlyAssetHandler } from './types/ContentlyAsset';
