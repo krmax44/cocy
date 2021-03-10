@@ -15,6 +15,13 @@ contently.use(ContentlyTransformMarkdown, options?);
 ```ts
 interface Options {
 	/**
+	 * If true, generates an excerpt.
+	 * @name generateExcerpt
+	 * @default true
+	 */
+	generateExcerpt?: boolean;
+
+	/**
 	 * @name plugins
 	 * @description An array of Remark plugins.
 	 * @default 'html,frontmatter,extract-frontmatter'
@@ -23,9 +30,19 @@ interface Options {
 }
 ```
 
-## Asset resolving
+## Frontmatter assets
 
-TODO: explain it
+You can load assets in frontmatter by using the `assets` key:
+
+```yaml
+---
+title: Hello!
+assets:
+	thumb: ./my-photo.jpg
+---
+```
+
+On the `ContentlyFile` object, you can retrieve the asset using `file.assets.get('thumb')`. Read more about assets with Contently [here](https://github.com/krmax44/contently/tree/main/packages/contently#assets). Inline image assets (`![]()`) work as well.
 
 ## Built-in Remark plugins
 
@@ -34,5 +51,5 @@ By default, the following plugins are loaded, which you can modify using hooks a
 - `html`: transforms Markdown to HTML
 - `frontmatter`: parses YAML frontmatter
 - `extract`: adds frontmatter data to the vfile
-- [`assetResolver`](https://github.com/krmax44/contently/blob/main/packages/contently-transform-markdown/src/plugins/assetResolver.ts): custom plugin, allows you to hook into asset loading (see above)
-- [`excerptGenerator`](https://github.com/krmax44/contently/blob/main/packages/contently-transform-markdown/src/excerptGenerator.ts): also custom, adds an excerpt to the result's attributes, which is either the frontmatter value of `excerpt`, all paragraphs before a `<!-- more -->` tag or the first paragraph of text (in that order).
+- [`assetResolver`](https://github.com/krmax44/contently/blob/main/packages/contently-transform-markdown/src/plugins/assetResolver.ts): custom plugin to resolve assets
+- [`excerptGenerator`](https://github.com/krmax44/contently/blob/main/packages/contently-transform-markdown/src/excerptGenerator.ts): also custom, adds an excerpt to the result's attributes, which is either the frontmatter value of `excerpt`, all paragraphs before a `<!-- more -->` tag or the first paragraph of text (in that order). Can be disabled by setting `config.generateExcerpt` to `false`.
