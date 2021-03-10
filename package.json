@@ -6,11 +6,11 @@
     "packages/*"
   ],
   "scripts": {
-    "postinstall": "lerna bootstrap",
     "pretest": "yarn build",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint --ignore-path .gitignore .",
+    "prepublish": "yarn test",
     "build": "yarn --cwd packages/contently build && lerna run build --scope contently-*"
   },
   "eslintConfig": {

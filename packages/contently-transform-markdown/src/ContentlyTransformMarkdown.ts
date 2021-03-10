@@ -9,7 +9,7 @@ import yaml from 'yaml';
 
 import { assetResolver, excerptGenerator } from './plugins';
 
-import Contently from 'contently';
+import Contently, { ContentlyFile } from 'contently';
 
 type RemarkPlugins = Array<{ plugin: any; options?: any }>;
 
@@ -45,8 +45,7 @@ export default async function ContentlyTransformMarkdown(
 		...(_options || {})
 	};
 
-	// TODO: handle other events
-	instance.on('fileAdded', async file => {
+	async function process(file: ContentlyFile): Promise<void> {
 		const u = unified();
 
 		const plugins = [...options.plugins];
@@ -83,7 +82,10 @@ export default async function ContentlyTransformMarkdown(
 		};
 
 		delete file.attributes.assets;
-	});
+	}
+
+	instance.on('fileAdded', process);
+	instance.on('fileUpdated', process);
 }
 
 export { assetResolver, excerptGenerator } from './plugins';

@@ -13,28 +13,7 @@ import { PATTERNS } from './utils/consts';
 import { ContentlyOptions } from './types/ContentlyOptions';
 import { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
 import { ContentlyResolvedAsset } from './types/ContentlyAsset';
-
-export type ContentlyEvents = {
-	/**
-	 * Triggered when a new file was added.
-	 */
-	fileAdded: [file: ContentlyFile];
-
-	/**
-	 * Triggered when a file was removed.
-	 */
-	fileRemoved: [file: ContentlyFile];
-
-	/**
-	 * Triggered when a file's content changed.
-	 */
-	fileUpdated: [file: ContentlyFile];
-
-	/**
-	 * Triggered when any file event occured (added, deleted...)
-	 */
-	fileChanged: [file: ContentlyFile];
-};
+import { ContentlyEvents } from './types/ContentlyEvents';
 
 export default class Contently extends Houk<ContentlyEvents> {
 	public options: ContentlyOptions;
@@ -111,13 +90,15 @@ export default class Contently extends Houk<ContentlyEvents> {
 				assets
 			};
 
-			if (this.files.has(filepath)) {
+			const exists = this.files.has(filepath);
+			this.files.set(filepath, file);
+
+			if (exists) {
 				await this.emit('fileUpdated', file);
 			} else {
 				await this.emit('fileAdded', file);
 			}
 
-			this.files.set(filepath, file);
 			await this.emit('fileChanged', file);
 		} catch {
 			throw new Error(`Could not read file ${filepath}`);
@@ -136,6 +117,10 @@ export default class Contently extends Houk<ContentlyEvents> {
 			return this.files.delete(filepath);
 		}
 		return false;
+	}
+
+	public update(file: ContentlyFile): void {
+		this.files.set(file.path, file);
 	}
 
 	public removeDir(dirpath: ContentlyPath): void {
@@ -175,13 +160,16 @@ export default class Contently extends Houk<ContentlyEvents> {
 	}
 
 	public async resolveAsset(
-		asset: ContentlyResolvedAsset,
+		assetPath: string,
 		file: ContentlyFile,
 		key?: string
-	): Promise<ContentlyResolvedAsset | false> {
-		const { assetHandler } = this.options;
-		if (!assetHandler) return false;
-		const resolved = await Promise.resolve(assetHandler(asset, file));
+	): Promise<ContentlyResolvedAsset> {
+		const hasAssetHandler = this.getListeners('assetAdded').size > 0;
+		if (!hasAssetHandler) return assetPath;
+
+		const resolved: string = await new Promise(resolve => {
+			this.emit('assetAdded', resolve, assetPath, file, key);
+		});
 
 		if (key) file.assets.set(key, resolved);
 

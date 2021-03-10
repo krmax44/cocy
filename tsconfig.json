@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
-    "target": "es6",
+    "target": "esnext",
     "esModuleInterop": true,
     "declaration": true,
-    "strict": true
+    "strict": true,
+    "outDir": "./build"
   },
   "exclude": [
     "node_modules",

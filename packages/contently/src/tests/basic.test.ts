@@ -13,7 +13,7 @@ function makeInstance() {
 	return new Contently({ cwd: FIXTURE_ROOT });
 }
 
-describe('ContentlyFiles', () => {
+describe('basic tests', () => {
 	const contently = makeInstance();
 	contently.startWatcher();
 
