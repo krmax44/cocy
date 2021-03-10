@@ -6,12 +6,15 @@
 
 Contently takes your content and turns it into a consumable API for your [JAMstack](https://jamstack.org) site. The headless content management library, no matter what framework you're using.
 
-⚠ Currently being rewritten.
+⚠ v2 is currently in alpha.
 
-## Goals
+## Documentation
 
-- fast performance
-- easily approachable
+Docs are provided per package.
+
+- [Contently](./packages/contently/README.md) - main docs
+- [contently-transform-markdown](./packages/contently-transform-markdown/README.md)
+- [contently-render-json](./packages/contently-render-json/README.md)
 
 ## Roadmap to v1
 
@@ -34,7 +37,7 @@ see [TODO](https://github.com/krmax44/contently/search?q=TODO) in code, also:
 import Contently from 'contently';
 import ContentlyTransformMarkdown from 'contently-transform-markdown';
 
-const contently = await new Contently({ patterns: ['./posts/**/*.md'] })
+const contently = await new Contently({ patterns: ['./posts/*.md'] })
 	.use(ContentlyTransformMarkdown)
 	.find();
 
