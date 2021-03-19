@@ -14,6 +14,7 @@ Docs are provided per package.
 
 - [Contently](./packages/contently/README.md) - main docs
 - [contently-transform-markdown](./packages/contently-transform-markdown/README.md)
+- [contently-transform-yaml](./packages/contently-transform-yaml/README.md)
 - [contently-render-json](./packages/contently-render-json/README.md)
 
 ## Roadmap to v1
