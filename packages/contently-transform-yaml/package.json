@@ -1,0 +1,29 @@
+{
+  "name": "contently-transform-yaml",
+  "version": "2.0.0-alpha.0",
+  "license": "MIT",
+  "files": [
+    "build"
+  ],
+  "main": "./build/ContentlyTransformYaml.js",
+  "types": "./build/ContentlyTransformYaml.d.ts",
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "author": "krmax44<hi@krmax44.de>",
+  "repository": {
+    "url": "https://github.com/krmax44/contently.git",
+    "type": "git",
+    "directory": "packages/contently-transform-yaml"
+  },
+  "dependencies": {
+    "yaml": "^1.10.0"
+  },
+  "peerDependencies": {
+    "contently": "^1.0.0"
+  },
+  "devDependencies": {
+    "waait": "^1.0.5"
+  }
+}

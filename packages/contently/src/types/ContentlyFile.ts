@@ -17,7 +17,7 @@ export interface ContentlyFile {
 	 * File contents
 	 * @name data
 	 */
-	data: string;
+	data: any;
 
 	/**
 	 * File attributes
