@@ -25,7 +25,7 @@ describe('basic tests', () => {
 		const file = contently.files.get(TEST_FILE);
 
 		expect(file.path).toBe(TEST_FILE);
-		expect(file.data).toBe('Test!\n');
+		expect(file.raw).toBe('Test!\n');
 		expect(file.slug).toBe('test');
 		expect(contently.files.has(TEST_FILE_DEEP)).toBe(true);
 	});
@@ -40,7 +40,7 @@ describe('basic tests', () => {
 		const file = contently.files.get(TEST_FILE_2);
 
 		expect(file?.path).toEqual(TEST_FILE_2);
-		expect(file?.data).toEqual(TEST_CONTENT);
+		expect(file?.raw).toEqual(TEST_CONTENT);
 
 		await fs.unlink(TEST_FILE_2);
 		await wait(200);

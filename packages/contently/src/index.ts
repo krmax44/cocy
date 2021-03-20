@@ -1,9 +1,6 @@
 import path from 'path';
-import { readFile } from 'fs/promises';
-
 import globby from 'globby';
 import chokidar from 'chokidar';
-import fstat from './utils/fstat';
 import isRepo from 'is-repo';
 
 import Houk from 'houk';
@@ -11,8 +8,8 @@ import slugify from 'slugo';
 
 import { PATTERNS } from './utils/consts';
 import { ContentlyOptions } from './types/ContentlyOptions';
-import { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
 import { ContentlyEvents } from './types/ContentlyEvents';
+import ContentlyFile from './ContentlyFile';
 
 type DropFirstInTuple<T extends any[]> = T extends [arg: any, ...rest: infer U]
 	? U
@@ -20,10 +17,12 @@ type DropFirstInTuple<T extends any[]> = T extends [arg: any, ...rest: infer U]
 
 export default class Contently extends Houk<ContentlyEvents> {
 	public options: ContentlyOptions;
-	public files: Map<ContentlyPath, ContentlyFile>;
+	public files: Map<string, ContentlyFile>;
 	public isGitRepo = false;
 	private watcher?: chokidar.FSWatcher;
-	private slugs = new Set<string>();
+	public slugs = new Set<string>();
+	public getListeners = super.getListeners;
+	public emit = super.emit;
 
 	constructor(options?: Partial<ContentlyOptions>) {
 		super();
@@ -68,7 +67,6 @@ export default class Contently extends Houk<ContentlyEvents> {
 				queue.push(promise);
 			}
 		}
-
 		await Promise.all(queue);
 
 		return this;
@@ -76,23 +74,12 @@ export default class Contently extends Houk<ContentlyEvents> {
 
 	/**
 	 * Add or update file
+	 * @param filepath: Absolute path to file
 	 */
-	public async add(filepath: ContentlyPath): Promise<void> {
-		const { isGitRepo } = this;
-
+	public async add(filepath: string): Promise<void> {
 		try {
-			const data = await readFile(filepath, 'utf8');
-			const attributes = await fstat(filepath, isGitRepo);
-			const slug = slugify(path.parse(filepath).name);
-			const assets = new Map();
-
-			const file: ContentlyFile = {
-				path: filepath,
-				data,
-				slug,
-				attributes,
-				assets
-			};
+			const file = new ContentlyFile(this, filepath);
+			await file.awaitEvent('fileRead');
 
 			const exists = this.files.has(filepath);
 			this.files.set(filepath, file);
@@ -104,21 +91,22 @@ export default class Contently extends Houk<ContentlyEvents> {
 			}
 
 			await this.emit('fileChanged', file);
-		} catch {
-			throw new Error(`Could not read file ${filepath}`);
+		} catch (e) {
+			console.error(e);
+			throw `Could not read file ${filepath}`;
 		}
 	}
 
 	/**
 	 * Remove file
-	 * @param _file File to remove
+	 * @param _file File to remove. Either a ContentlyFile or an absolute path
 	 * @returns True on success, false if file didn't exist
 	 */
-	public remove(_file: ContentlyFile | ContentlyPath): boolean {
+	public remove(_file: ContentlyFile | string): boolean {
 		let path: string | undefined;
 		let file: ContentlyFile | undefined;
 
-		if (typeof _file !== 'string') {
+		if (_file instanceof ContentlyFile) {
 			path = [...this.files].find(([, f]) => f === _file)?.[0];
 			file = _file;
 		} else {
@@ -143,9 +131,9 @@ export default class Contently extends Houk<ContentlyEvents> {
 
 	/**
 	 * Recursively deletes all files in a given directory.
-	 * @param dirpath Path of the directory to remove.
+	 * @param dirpath Absolute path of the directory to remove.
 	 */
-	public removeDir(dirpath: ContentlyPath): void {
+	public removeDir(dirpath: string): void {
 		for (const file of this.files.keys()) {
 			const { dir } = path.parse(file);
 
@@ -163,10 +151,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 
 		this.watcher = chokidar.watch(patterns, { cwd });
 
-		const listen = (
-			event: string,
-			listener: (filepath: ContentlyPath) => void
-		) => {
+		const listen = (event: string, listener: (filepath: string) => void) => {
 			this.watcher?.on(event, filepath => {
 				const normalized = path.resolve(cwd, filepath);
 				Reflect.apply(listener, this, [normalized]);
@@ -188,51 +173,6 @@ export default class Contently extends Houk<ContentlyEvents> {
 	}
 
 	/**
-	 * Resolve an asset.
-	 * @param assetPath The absolute path of the asset.
-	 * @param file The parent file to which the asset belongs to.
-	 * @param key An optional key, with which the asset can be retrieved from the file.
-	 */
-	public async resolveAsset(
-		assetPath: string,
-		file: ContentlyFile,
-		key?: string
-	): Promise<string> {
-		const hasAssetHandler = this.getListeners('assetAdded').size > 0;
-		if (!hasAssetHandler) return assetPath;
-
-		const resolved: string = await new Promise(resolve => {
-			this.emit('assetAdded', resolve, assetPath, file, key);
-		});
-
-		if (key) file.assets.set(key, resolved);
-
-		return resolved;
-	}
-
-	/**
-	 * Generates a slug and updates the file.
-	 * @param file The file, of which the slug will be set
-	 * @param text The text to slugify.
-	 * @param slugify Slugify the text using the set slugify function. True by default.
-	 */
-	public findSlug(file: ContentlyFile, text: string, slugify = true): string {
-		// give the current slug up for reuse
-		this.slugs.delete(file.slug);
-
-		const slug = slugify ? this.options.slugify(text) : text;
-		let i = 1;
-		let availableSlug = slug;
-
-		while (this.slugs.has(availableSlug)) {
-			availableSlug = `${slug}-${i++}`;
-		}
-
-		file.slug = availableSlug;
-		return availableSlug;
-	}
-
-	/**
 	 * Call a plugin function, so it can register hooks.
 	 * @param plugin The plugin which will be registered.
 	 * @param options Options, which will be passed to the plugin.
@@ -246,5 +186,4 @@ export default class Contently extends Houk<ContentlyEvents> {
 	}
 }
 
-export { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
-export { ContentlyOptions };
+export { ContentlyOptions, ContentlyFile };

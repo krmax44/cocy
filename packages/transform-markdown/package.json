@@ -1,12 +1,12 @@
 {
-  "name": "contently-transform-markdown",
-  "version": "2.0.0-alpha.0",
+  "name": "@contently/transform-markdown",
+  "version": "1.0.0",
   "license": "MIT",
   "files": [
     "build"
   ],
-  "main": "./build/ContentlyTransformMarkdown.js",
-  "types": "./build/ContentlyTransformMarkdown.d.ts",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc"
@@ -15,22 +15,21 @@
   "repository": {
     "url": "https://github.com/krmax44/contently.git",
     "type": "git",
-    "directory": "packages/contently-transform-markdown"
+    "directory": "packages/transform-markdown"
   },
   "dependencies": {
     "always-array": "^1.1.0",
+    "contently": "^1.0.0",
     "remark": "^13.0.0",
     "remark-extract-frontmatter": "^3.1.0",
     "remark-frontmatter": "^3.0.0",
     "remark-html": "^13.0.1",
     "remark-parse": "^9.0.0",
     "unified": "^9.2.1",
+    "unist-util-find": "^1.0.2",
     "unist-util-visit": "^2.0.3",
     "vfile": "^4.2.1",
     "yaml": "^1.10.0"
-  },
-  "peerDependencies": {
-    "contently": "^1.0.0"
   },
   "devDependencies": {
     "waait": "^1.0.5"

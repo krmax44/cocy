@@ -14,9 +14,9 @@ interface AssetVFile extends VFile {
 	data: Record<string, any>;
 }
 
-type Options = { instance: Contently; file: ContentlyFile };
+type Options = { file: ContentlyFile };
 
-export function assetResolver({ instance, file: contentlyFile }: Options): any {
+export function assetResolver({ file: contentlyFile }: Options): any {
 	return async function (tree: Node, file: AssetVFile, next: () => void) {
 		const allAssets = new Map();
 
@@ -28,9 +28,8 @@ export function assetResolver({ instance, file: contentlyFile }: Options): any {
 				if (allAssets.has(url)) {
 					file.data.assets[asset] = allAssets.get(url);
 				} else {
-					file.data.assets[asset] = await instance.resolveAsset(
+					file.data.assets[asset] = await contentlyFile.resolveAsset(
 						url,
-						contentlyFile,
 						asset
 					);
 
@@ -47,14 +46,12 @@ export function assetResolver({ instance, file: contentlyFile }: Options): any {
 			if (allAssets.has(node.url)) {
 				node.url = allAssets.get(node.url);
 			} else {
-				const promise = instance
-					.resolveAsset(node.url, contentlyFile)
-					.then(url => {
-						if (!url) return;
+				const promise = contentlyFile.resolveAsset(node.url).then(url => {
+					if (!url) return;
 
-						allAssets.set(node.url, url);
-						node.url = url;
-					});
+					allAssets.set(node.url, url);
+					node.url = url;
+				});
 
 				queue.push(promise);
 			}

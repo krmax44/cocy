@@ -1,3 +1,7 @@
+---
+title: Hello!
+---
+
 # Hello World
 
 Hello from Contently!

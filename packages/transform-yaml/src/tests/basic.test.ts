@@ -1,14 +1,12 @@
 import path from 'path';
 import Contently from 'contently';
-import ContentlyTransformYaml from '../ContentlyTransformYaml';
+import yaml from '..';
 
-describe('ContentlyTransformYaml', () => {
+describe('transform YAML', () => {
 	it('should transform all files', async () => {
 		const cwd = path.join(__dirname, 'fixtures/basic/');
 
-		const contently = new Contently({ cwd, patterns: ['*.yml'] }).use(
-			ContentlyTransformYaml
-		);
+		const contently = new Contently({ cwd, patterns: ['*.yml'] }).use(yaml);
 
 		await contently.find();
 

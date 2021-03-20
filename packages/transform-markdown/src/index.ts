@@ -10,6 +10,7 @@ import yaml from 'yaml';
 import { assetResolver, excerptGenerator } from './plugins';
 
 import Contently, { ContentlyFile } from 'contently';
+import { titleGenerator } from './plugins/titleGenerator';
 
 type RemarkPlugins = Array<{ plugin: any; options?: any }>;
 
@@ -22,6 +23,16 @@ interface Options {
 	generateExcerpt?: boolean;
 
 	/**
+	 * If true, generates a title from the file's first heading.
+	 */
+	generateTitle?: boolean;
+
+	/**
+	 * If true, generates a slug from the file's first heading.
+	 */
+	generateSlug?: boolean;
+
+	/**
 	 * An array of Remark plugins.
 	 * @name plugins
 	 * @default 'html,frontmatter,extract-frontmatter'
@@ -32,16 +43,26 @@ interface Options {
 export const defaultPlugins: RemarkPlugins = [
 	{ plugin: markdown },
 	{ plugin: frontmatter },
-	{ plugin: extract, options: { yaml: yaml.parse } }
+	{ plugin: extract, options: { yaml: yaml.parse } },
+	{ plugin: html }
 ];
+
+type MdData = {
+	html: string;
+	vfile: vfile.VFile;
+};
+
+export type ContentlyMdFile = ContentlyFile<MdData>;
 
 export default async function ContentlyTransformMarkdown(
 	instance: Contently,
-	_options: Options
+	_options?: Options
 ): Promise<void> {
 	const options = {
 		plugins: defaultPlugins,
 		generateExcerpt: true,
+		generateTitle: true,
+		generateSlug: true,
 		...(_options || {})
 	};
 
@@ -53,8 +74,18 @@ export default async function ContentlyTransformMarkdown(
 			plugins.push({ plugin: excerptGenerator });
 		}
 
-		plugins.push({ plugin: assetResolver, options: { instance, file } });
-		plugins.push({ plugin: html });
+		plugins.push({ plugin: assetResolver, options: { file } });
+
+		if (options.generateTitle || options.generateSlug) {
+			plugins.push({
+				plugin: titleGenerator,
+				options: {
+					title: options.generateTitle,
+					slug: options.generateSlug,
+					file
+				}
+			});
+		}
 
 		for (const { plugin, options: opts } of plugins) {
 			u.use(plugin, opts);
@@ -65,7 +96,7 @@ export default async function ContentlyTransformMarkdown(
 		);
 
 		const v = vfile({
-			contents: file.data,
+			contents: file.raw?.toString(),
 			cwd: instance.options.cwd,
 			basename,
 			stem,
@@ -75,7 +106,8 @@ export default async function ContentlyTransformMarkdown(
 
 		const { data, contents } = await u.process(v);
 
-		file.data = contents.toString();
+		const mdData: MdData = { html: contents.toString(), vfile: v };
+		file.data = mdData;
 		file.attributes = {
 			...file.attributes,
 			...((data as Record<string, unknown>) || {})

@@ -17,7 +17,7 @@ describe('assets', () => {
 
 		const file = contently.files.get(TEST_FILE);
 
-		const asset = await contently.resolveAsset('foo.png', file);
+		const asset = await file.resolveAsset('foo.png');
 		expect(asset).toBe('resolved');
 		expect(file.assets.size).toBe(0);
 	});
@@ -30,7 +30,7 @@ describe('assets', () => {
 
 		const file = contently.files.get(TEST_FILE);
 
-		await contently.resolveAsset('foo.png', file, 'key');
+		await file.resolveAsset('foo.png', 'key');
 		expect(file.assets.size).toBe(1);
 		expect(file.assets.get('key')).toBe('resolved');
 	});
@@ -41,7 +41,7 @@ describe('assets', () => {
 
 		const file = contently.files.get(TEST_FILE);
 
-		const asset = await contently.resolveAsset('foo.png', file, 'key');
+		const asset = await file.resolveAsset('foo.png', 'key');
 		expect(asset).toBe('foo.png');
 	});
 });

@@ -1,13 +1,13 @@
 # Contently Transform Markdown
 
-Uses [Remark](https://github.com/remarkjs/remark) to transform your Markdown content.
+Uses [Remark](https://github.com/remarkjs/remark) to transform your Markdown content to HTML.
 
 ## Usage
 
 ```ts
-import ContentlyTransformMarkdown from 'contently-transform-markdown';
+import md from '@contently/transform-markdown';
 
-contently.use(ContentlyTransformMarkdown, options?);
+contently.use(md, options?);
 ```
 
 ## Options
@@ -51,5 +51,5 @@ By default, the following plugins are loaded, which you can modify using hooks a
 - `html`: transforms Markdown to HTML
 - `frontmatter`: parses YAML frontmatter
 - `extract`: adds frontmatter data to the vfile
-- [`assetResolver`](https://github.com/krmax44/contently/blob/main/packages/contently-transform-markdown/src/plugins/assetResolver.ts): custom plugin to resolve assets
-- [`excerptGenerator`](https://github.com/krmax44/contently/blob/main/packages/contently-transform-markdown/src/excerptGenerator.ts): also custom, adds an excerpt to the result's attributes, which is either the frontmatter value of `excerpt`, all paragraphs before a `<!-- more -->` tag or the first paragraph of text (in that order). Can be disabled by setting `config.generateExcerpt` to `false`.
+- [`assetResolver`](https://github.com/krmax44/contently/blob/main/packages/transform-markdown/src/plugins/assetResolver.ts): custom plugin to resolve assets
+- [`excerptGenerator`](https://github.com/krmax44/contently/blob/main/packages/transform-markdown/src/excerptGenerator.ts): also custom, adds an excerpt to the result's attributes, which is either the frontmatter value of `excerpt`, all paragraphs before a `<!-- more -->` tag or the first paragraph of text (in that order). Can be disabled by setting `config.generateExcerpt` to `false`.

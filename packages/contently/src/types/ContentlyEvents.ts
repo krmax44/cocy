@@ -1,4 +1,4 @@
-import { ContentlyFile } from './ContentlyFile';
+import ContentlyFile from '../ContentlyFile';
 
 export type ContentlyEvents = {
 	/**

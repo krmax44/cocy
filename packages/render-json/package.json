@@ -1,12 +1,12 @@
 {
-  "name": "contently-transform-yaml",
-  "version": "2.0.0-alpha.0",
+  "name": "@contently/render-json",
+  "version": "1.0.0",
   "license": "MIT",
   "files": [
     "build"
   ],
-  "main": "./build/ContentlyTransformYaml.js",
-  "types": "./build/ContentlyTransformYaml.d.ts",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc"
@@ -15,12 +15,9 @@
   "repository": {
     "url": "https://github.com/krmax44/contently.git",
     "type": "git",
-    "directory": "packages/contently-transform-yaml"
+    "directory": "packages/render-json"
   },
   "dependencies": {
-    "yaml": "^1.10.0"
-  },
-  "peerDependencies": {
     "contently": "^1.0.0"
   },
   "devDependencies": {

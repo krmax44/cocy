@@ -5,7 +5,7 @@ export default async function ContentlyTransformMarkdown(
 	instance: Contently
 ): Promise<void> {
 	async function process(file: ContentlyFile): Promise<void> {
-		const parsed = yaml.parse(file.data);
+		const parsed = yaml.parse(file.raw);
 		file.data = parsed;
 	}
 

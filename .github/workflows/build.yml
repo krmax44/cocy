@@ -18,6 +18,8 @@ jobs:
       - run: yarn install
       - name: Lint
         run: yarn lint
+      - name: Build
+        run: yarn build
       - name: Test
         run: yarn test --coverage
       - uses: codecov/codecov-action@v1
