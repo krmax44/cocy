@@ -56,16 +56,18 @@ export default class ContentlyFile<DataType = any> extends Houk<{
 		const slug = this.instance.options.slugify(parse(path).name);
 		this.slug = this.setSlug(slug);
 
-		readFile(path, 'utf-8')
-			.then(data => {
+		try {
+			readFile(path, 'utf-8').then(data => {
 				this.raw = data;
 				this.emit('fileRead');
-			})
-			.catch(e => console.error(this, e));
+			});
 
-		fstat(path, instance.isGitRepo).then(attributes => {
-			this.attributes = { ...this.attributes, ...attributes };
-		});
+			fstat(path, instance.isGitRepo).then(attributes => {
+				this.attributes = { ...this.attributes, ...attributes };
+			});
+		} catch {
+			throw `Could not read file ${path}`;
+		}
 	}
 
 	/**

@@ -77,24 +77,19 @@ export default class Contently extends Houk<ContentlyEvents> {
 	 * @param filepath: Absolute path to file
 	 */
 	public async add(filepath: string): Promise<void> {
-		try {
-			const file = new ContentlyFile(this, filepath);
-			await file.awaitEvent('fileRead');
+		const file = new ContentlyFile(this, filepath);
+		await file.awaitEvent('fileRead');
 
-			const exists = this.files.has(filepath);
-			this.files.set(filepath, file);
+		const exists = this.files.has(filepath);
+		this.files.set(filepath, file);
 
-			if (exists) {
-				await this.emit('fileUpdated', file);
-			} else {
-				await this.emit('fileAdded', file);
-			}
-
-			await this.emit('fileChanged', file);
-		} catch (e) {
-			console.error(e);
-			throw `Could not read file ${filepath}`;
+		if (exists) {
+			await this.emit('fileUpdated', file);
+		} else {
+			await this.emit('fileAdded', file);
 		}
+
+		await this.emit('fileChanged', file);
 	}
 
 	/**
