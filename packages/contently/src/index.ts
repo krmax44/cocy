@@ -14,11 +14,16 @@ import { ContentlyOptions } from './types/ContentlyOptions';
 import { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
 import { ContentlyEvents } from './types/ContentlyEvents';
 
+type DropFirstInTuple<T extends any[]> = T extends [arg: any, ...rest: infer U]
+	? U
+	: T;
+
 export default class Contently extends Houk<ContentlyEvents> {
 	public options: ContentlyOptions;
 	public files: Map<ContentlyPath, ContentlyFile>;
 	public isGitRepo = false;
 	private watcher?: chokidar.FSWatcher;
+	private slugs = new Set<string>();
 
 	constructor(options?: Partial<ContentlyOptions>) {
 		super();
@@ -106,32 +111,53 @@ export default class Contently extends Houk<ContentlyEvents> {
 
 	/**
 	 * Remove file
+	 * @param _file File to remove
 	 * @returns True on success, false if file didn't exist
 	 */
-	public remove(filepath: ContentlyPath): boolean {
-		const file = this.files.get(filepath);
-		if (file) {
-			this.emit('fileRemoved', file);
-			this.emit('fileChanged', file);
-			return this.files.delete(filepath);
+	public remove(_file: ContentlyFile | ContentlyPath): boolean {
+		let path: string | undefined;
+		let file: ContentlyFile | undefined;
+
+		if (typeof _file !== 'string') {
+			path = [...this.files].find(([, f]) => f === _file)?.[0];
+			file = _file;
+		} else {
+			path = _file;
+			file = this.files.get(path);
 		}
-		return false;
+
+		if (!path || !file) return false;
+
+		this.emit('fileRemoved', file);
+		this.emit('fileChanged', file);
+		return this.files.delete(path);
 	}
 
+	/**
+	 * Update a file.
+	 * @param file
+	 */
 	public update(file: ContentlyFile): void {
 		this.files.set(file.path, file);
 	}
 
+	/**
+	 * Recursively deletes all files in a given directory.
+	 * @param dirpath Path of the directory to remove.
+	 */
 	public removeDir(dirpath: ContentlyPath): void {
 		for (const file of this.files.keys()) {
 			const { dir } = path.parse(file);
 
-			if (dir === dirpath) {
+			if (dir.startsWith(dirpath)) {
 				this.files.delete(file);
 			}
 		}
 	}
 
+	/**
+	 * Start watching the file system for changes.
+	 */
 	public startWatcher(): void {
 		const { cwd, patterns } = this.options;
 
@@ -154,10 +180,19 @@ export default class Contently extends Houk<ContentlyEvents> {
 		listen('unlinkDir', this.removeDir);
 	}
 
+	/**
+	 * Stop watching the file system for changes.
+	 */
 	public stopWatcher(): void {
 		this.watcher?.close();
 	}
 
+	/**
+	 * Resolve an asset.
+	 * @param assetPath The absolute path of the asset.
+	 * @param file The parent file to which the asset belongs to.
+	 * @param key An optional key, with which the asset can be retrieved from the file.
+	 */
 	public async resolveAsset(
 		assetPath: string,
 		file: ContentlyFile,
@@ -175,9 +210,36 @@ export default class Contently extends Houk<ContentlyEvents> {
 		return resolved;
 	}
 
-	public use<PluginOptions extends any[]>(
-		plugin: (instance: Contently, ...args: any) => void,
-		...options: PluginOptions
+	/**
+	 * Generates a slug and updates the file.
+	 * @param file The file, of which the slug will be set
+	 * @param text The text to slugify.
+	 * @param slugify Slugify the text using the set slugify function. True by default.
+	 */
+	public findSlug(file: ContentlyFile, text: string, slugify = true): string {
+		// give the current slug up for reuse
+		this.slugs.delete(file.slug);
+
+		const slug = slugify ? this.options.slugify(text) : text;
+		let i = 1;
+		let availableSlug = slug;
+
+		while (this.slugs.has(availableSlug)) {
+			availableSlug = `${slug}-${i++}`;
+		}
+
+		file.slug = availableSlug;
+		return availableSlug;
+	}
+
+	/**
+	 * Call a plugin function, so it can register hooks.
+	 * @param plugin The plugin which will be registered.
+	 * @param options Options, which will be passed to the plugin.
+	 */
+	public use<Plugin extends (instance: Contently, ...args: any) => void>(
+		plugin: Plugin,
+		...options: DropFirstInTuple<Parameters<Plugin>>
 	): Contently {
 		plugin(this, ...options);
 		return this;
@@ -185,3 +247,4 @@ export default class Contently extends Houk<ContentlyEvents> {
 }
 
 export { ContentlyFile, ContentlyPath } from './types/ContentlyFile';
+export { ContentlyOptions };

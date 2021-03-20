@@ -4,7 +4,7 @@
  */
 export type ContentlyPath = string;
 
-export interface ContentlyFile {
+export interface ContentlyFile<DataType = any> {
 	path: ContentlyPath;
 
 	/**
@@ -17,7 +17,7 @@ export interface ContentlyFile {
 	 * File contents
 	 * @name data
 	 */
-	data: any;
+	data: DataType;
 
 	/**
 	 * File attributes

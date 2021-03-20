@@ -1,5 +1,5 @@
 import path from 'path';
-import Contently from '../Contently';
+import Contently from '..';
 
 const FIXTURE_ROOT = path.join(__dirname, 'fixture-basic');
 const TEST_FILE = path.join(FIXTURE_ROOT, 'test.md');

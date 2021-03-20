@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs/promises';
-import Contently from '../Contently';
+import Contently from '..';
 import wait from 'waait';
 
 const FIXTURE_ROOT = path.join(__dirname, 'fixture-basic');
