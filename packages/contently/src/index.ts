@@ -77,15 +77,17 @@ export default class Contently extends Houk<ContentlyEvents> {
 	 * @param filepath: Absolute path to file
 	 */
 	public async add(filepath: string): Promise<void> {
-		const file = new ContentlyFile(this, filepath);
-		await file.awaitEvent('fileRead');
-
 		const exists = this.files.has(filepath);
-		this.files.set(filepath, file);
+		const file = this.files.get(filepath) ?? new ContentlyFile(this, filepath);
 
 		if (exists) {
+			// exists, so reload the file
+			file.load();
+			await file.awaitEvent('fileRead');
 			await this.emit('fileUpdated', file);
 		} else {
+			this.files.set(filepath, file);
+			await file.awaitEvent('fileRead');
 			await this.emit('fileAdded', file);
 		}
 
@@ -113,6 +115,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 
 		this.emit('fileRemoved', file);
 		this.emit('fileChanged', file);
+		this.slugs.delete(file.slug);
 		return this.files.delete(path);
 	}
 
