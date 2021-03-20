@@ -5,7 +5,7 @@ Transforms `yaml` files.
 ## Usage
 
 ```ts
-import yaml from '@contently/transform-yaml';
+import yaml from '@contentlyjs/transform-yaml';
 
 contently.use(yaml);
 ```

@@ -5,7 +5,7 @@ Uses [Remark](https://github.com/remarkjs/remark) to transform your Markdown con
 ## Usage
 
 ```ts
-import md from '@contently/transform-markdown';
+import md from '@contentlyjs/transform-markdown';
 
 contently.use(md, options?);
 ```

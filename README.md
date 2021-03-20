@@ -34,7 +34,7 @@ see [TODO](https://github.com/krmax44/contently/search?q=TODO) in code, also:
 
 ```ts
 import Contently from 'contently';
-import ContentlyTransformMarkdown from '@contently/transform-markdown';
+import ContentlyTransformMarkdown from '@contentlyjs/transform-markdown';
 
 const contently = await new Contently({ patterns: ['./posts/*.md'] })
 	.use(ContentlyTransformMarkdown)
