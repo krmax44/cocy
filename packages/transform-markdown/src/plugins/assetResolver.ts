@@ -1,7 +1,7 @@
 import visit from 'unist-util-visit';
 import { Node } from 'unist';
 import { VFile } from 'vfile';
-import Contently, { ContentlyFile } from 'contently';
+import { ContentlyFile } from 'contently';
 
 interface Image extends Node {
 	type: 'image';
