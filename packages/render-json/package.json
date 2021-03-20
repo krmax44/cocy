@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "license": "MIT",
   "files": [
-    "build"
+    "dist"
   ],
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "tsc -w",
-    "build": "tsc"
+    "dev": "tsup ./src/index.ts --watch",
+    "build": "tsup ./src/index.ts --dts --minify"
   },
   "author": "krmax44<hi@krmax44.de>",
   "repository": {
