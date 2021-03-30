@@ -17,7 +17,7 @@ describe('render JSON', () => {
 	const outDir = path.join(cwd, '..', 'contently.tmp');
 
 	test('renders all files', async () => {
-		await contently.find();
+		await contently.discover();
 		await wait(200);
 
 		const outfile = path.join(outDir, 'test.json');

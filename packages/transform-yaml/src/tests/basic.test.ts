@@ -8,7 +8,7 @@ describe('transform YAML', () => {
 
 		const contently = new Contently({ cwd, patterns: ['*.yml'] }).use(yaml);
 
-		await contently.find();
+		await contently.discover();
 
 		const first = path.join(cwd, 'first.yml');
 

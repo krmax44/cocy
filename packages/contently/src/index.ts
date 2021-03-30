@@ -10,6 +10,7 @@ import { PATTERNS } from './utils/consts';
 import { ContentlyOptions } from './types/ContentlyOptions';
 import { ContentlyEvents } from './types/ContentlyEvents';
 import ContentlyFile from './ContentlyFile';
+import ContentlyFiles from './ContentlyFiles';
 
 type DropFirstInTuple<T extends any[]> = T extends [arg: any, ...rest: infer U]
 	? U
@@ -17,7 +18,7 @@ type DropFirstInTuple<T extends any[]> = T extends [arg: any, ...rest: infer U]
 
 export default class Contently extends Houk<ContentlyEvents> {
 	public options: ContentlyOptions;
-	public files: Map<string, ContentlyFile>;
+	public files: ContentlyFiles;
 	public isGitRepo = false;
 	private watcher?: chokidar.FSWatcher;
 	public slugs = new Set<string>();
@@ -43,7 +44,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 		// make sure it's absolute
 		this.options.cwd = path.resolve(cwd, this.options.cwd);
 
-		this.files = new Map();
+		this.files = new ContentlyFiles();
 
 		isRepo(cwd).then(result => {
 			this.isGitRepo = result;
@@ -55,7 +56,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 	 * @param cwd Directory to search files in
 	 * @default cwd Contently instance cwd
 	 */
-	async find(cwd = this.options.cwd): Promise<Contently> {
+	async discover(cwd = this.options.cwd): Promise<Contently> {
 		const files = globby.stream(this.options.patterns, { cwd });
 		const queue = [];
 
@@ -158,7 +159,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 
 		listen('add', this.add);
 		listen('change', this.add);
-		listen('addDir', this.find);
+		listen('addDir', this.discover);
 		listen('unlink', this.remove);
 		listen('unlinkDir', this.removeDir);
 	}

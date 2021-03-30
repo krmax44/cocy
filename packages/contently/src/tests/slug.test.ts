@@ -9,7 +9,7 @@ describe('slug generation', () => {
 	const contently = new Contently({ cwd: FIXTURE_ROOT });
 
 	test('finds all files', async () => {
-		await contently.find();
+		await contently.discover();
 		const file1 = contently.files.get(TEST_FILE_1);
 		const file2 = contently.files.get(TEST_FILE_2);
 		const slug1 = file1.setSlug('test');

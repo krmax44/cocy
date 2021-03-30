@@ -8,7 +8,7 @@ describe('readme example', () => {
 			cwd: __dirname
 		})
 			.use(ContentlyTransformMarkdown)
-			.find();
+			.discover();
 
 		const logs = [];
 		for (const file of contently.files.values()) {

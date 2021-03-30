@@ -38,7 +38,7 @@ import md from '@contentlyjs/transform-markdown';
 
 const contently = await new Contently({ patterns: ['./posts/*.md'] })
 	.use(md)
-	.find();
+	.discover();
 
 for (const file of contently.files.values()) {
 	console.log(file.slug);

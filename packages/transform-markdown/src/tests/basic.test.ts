@@ -10,7 +10,7 @@ describe('transform markdown', () => {
 
 		contently.on('assetAdded', resolve => resolve('foo'));
 
-		await contently.find();
+		await contently.discover();
 
 		const first = path.join(cwd, 'Hello-World.md');
 		const second = path.join(cwd, 'Second-Post.md');

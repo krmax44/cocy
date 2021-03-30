@@ -18,7 +18,7 @@ describe('basic tests', () => {
 		await fs.mkdir(TEST_FOLDER);
 		await fs.writeFile(TEST_FILE_DEEP, '');
 
-		await contently.find();
+		await contently.discover();
 		const file = contently.files.get(TEST_FILE);
 
 		expect(file.path).toBe(TEST_FILE);

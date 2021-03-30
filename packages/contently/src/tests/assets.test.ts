@@ -11,7 +11,7 @@ function makeInstance() {
 describe('assets', () => {
 	test('finds all files', async () => {
 		const contently = makeInstance();
-		await contently.find();
+		await contently.discover();
 
 		contently.on('assetAdded', resolve => resolve('resolved'));
 
@@ -24,7 +24,7 @@ describe('assets', () => {
 
 	test('adds keyed assets', async () => {
 		const contently = makeInstance();
-		await contently.find();
+		await contently.discover();
 
 		contently.on('assetAdded', resolve => resolve('resolved'));
 
@@ -37,7 +37,7 @@ describe('assets', () => {
 
 	test('deals with no resolver', async () => {
 		const contently = makeInstance();
-		await contently.find();
+		await contently.discover();
 
 		const file = contently.files.get(TEST_FILE);
 
