@@ -1,13 +1,13 @@
-# Contently Render JSON
+# Cocy Render JSON
 
 Generates static JSON files.
 
 ## Usage
 
 ```ts
-import ContentlyRenderJSON from 'contently-render-json';
+import CocyRenderJSON from 'cocy-render-json';
 
-contently.use(ContentlyRenderJSON, options?);
+cocy.use(CocyRenderJSON, options?);
 ```
 
 ## Options
@@ -16,7 +16,7 @@ contently.use(ContentlyRenderJSON, options?);
 interface Options {
 	/**
 	 * Output directory for built JSON files
-	 * @default outDir contently in cwd's parent
+	 * @default outDir cocy in cwd's parent
 	 */
 	outDir?: string;
 

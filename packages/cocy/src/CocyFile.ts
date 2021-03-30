@@ -2,16 +2,16 @@ import { readFile } from 'fs/promises';
 import Houk from 'houk';
 import { parse } from 'path';
 import mime from 'mime-types';
-import Contently from '.';
+import Cocy from '.';
 import fstat from './utils/fstat';
 
-export type ContentlyFileAttributes = {
+export type CocyFileAttributes = {
 	[key: string]: any;
 	createdAt?: Date;
 	modifiedAt?: Date;
 };
 
-export default class ContentlyFile<DataType = any> extends Houk<{
+export default class CocyFile<DataType = any> extends Houk<{
 	/**
 	 * File has been read and content saved to `raw`.
 	 */
@@ -48,14 +48,14 @@ export default class ContentlyFile<DataType = any> extends Houk<{
 	 * File attributes
 	 * @name attributes
 	 */
-	public attributes: ContentlyFileAttributes = {};
+	public attributes: CocyFileAttributes = {};
 
 	/**
 	 * Resolved assets.
 	 */
 	public assets = new Map<string, string>();
 
-	constructor(private instance: Contently, path: string) {
+	constructor(private instance: Cocy, path: string) {
 		super();
 
 		this.path = path;

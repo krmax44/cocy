@@ -1,21 +1,21 @@
 import path from 'path';
-import Contently from '..';
+import Cocy from '..';
 
 const FIXTURE_ROOT = path.join(__dirname, 'fixture-basic');
 const TEST_FILE = path.join(FIXTURE_ROOT, 'test.md');
 
 function makeInstance() {
-	return new Contently({ cwd: FIXTURE_ROOT });
+	return new Cocy({ cwd: FIXTURE_ROOT });
 }
 
 describe('assets', () => {
 	test('finds all files', async () => {
-		const contently = makeInstance();
-		await contently.discover();
+		const cocy = makeInstance();
+		await cocy.discover();
 
-		contently.on('assetAdded', resolve => resolve('resolved'));
+		cocy.on('assetAdded', resolve => resolve('resolved'));
 
-		const file = contently.files.get(TEST_FILE);
+		const file = cocy.files.get(TEST_FILE);
 
 		const asset = await file.resolveAsset('foo.png');
 		expect(asset).toBe('resolved');
@@ -23,12 +23,12 @@ describe('assets', () => {
 	});
 
 	test('adds keyed assets', async () => {
-		const contently = makeInstance();
-		await contently.discover();
+		const cocy = makeInstance();
+		await cocy.discover();
 
-		contently.on('assetAdded', resolve => resolve('resolved'));
+		cocy.on('assetAdded', resolve => resolve('resolved'));
 
-		const file = contently.files.get(TEST_FILE);
+		const file = cocy.files.get(TEST_FILE);
 
 		await file.resolveAsset('foo.png', 'key');
 		expect(file.assets.size).toBe(1);
@@ -36,10 +36,10 @@ describe('assets', () => {
 	});
 
 	test('deals with no resolver', async () => {
-		const contently = makeInstance();
-		await contently.discover();
+		const cocy = makeInstance();
+		await cocy.discover();
 
-		const file = contently.files.get(TEST_FILE);
+		const file = cocy.files.get(TEST_FILE);
 
 		const asset = await file.resolveAsset('foo.png', 'key');
 		expect(asset).toBe('foo.png');

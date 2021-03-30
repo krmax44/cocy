@@ -1,26 +1,26 @@
 import path from 'path';
-import Contently from 'contently';
-import ContentlyTransformMarkdown, { ContentlyMdFile } from '..';
+import Cocy from 'cocy';
+import CocyTransformMarkdown, { CocyMdFile } from '..';
 
 describe('transform markdown', () => {
 	it('should transform all files', async () => {
 		const cwd = path.join(__dirname, 'fixtures/basic/');
 
-		const contently = new Contently({ cwd }).use(ContentlyTransformMarkdown);
+		const cocy = new Cocy({ cwd }).use(CocyTransformMarkdown);
 
-		contently.on('assetAdded', resolve => resolve('foo'));
+		cocy.on('assetAdded', resolve => resolve('foo'));
 
-		await contently.discover();
+		await cocy.discover();
 
 		const first = path.join(cwd, 'Hello-World.md');
 		const second = path.join(cwd, 'Second-Post.md');
 
-		const firstFile: ContentlyMdFile = contently.files.get(first);
-		const secondFile: ContentlyMdFile = contently.files.get(second);
+		const firstFile: CocyMdFile = cocy.files.get(first);
+		const secondFile: CocyMdFile = cocy.files.get(second);
 
 		expect(firstFile.data.html).toBe(
 			'<h1>Hello World</h1>\n' +
-				'<p>Hello from Contently!</p>\n' +
+				'<p>Hello from Cocy!</p>\n' +
 				'<!-- more -->\n' +
 				'<p>Lorem ipsum</p>\n' +
 				'<p><img src="foo" alt="Image"></p>\n'

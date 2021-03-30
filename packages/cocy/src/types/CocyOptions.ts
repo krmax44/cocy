@@ -1,4 +1,4 @@
-export interface ContentlyOptions {
+export interface CocyOptions {
 	/**
 	 * Glob patterns for files
 	 * @name patterns

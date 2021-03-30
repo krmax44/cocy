@@ -1,19 +1,19 @@
 import path from 'path';
-import Contently from 'contently';
+import Cocy from 'cocy';
 import yaml from '..';
 
 describe('transform YAML', () => {
 	it('should transform all files', async () => {
 		const cwd = path.join(__dirname, 'fixtures/basic/');
 
-		const contently = new Contently({ cwd, patterns: ['*.yml'] }).use(yaml);
+		const cocy = new Cocy({ cwd, patterns: ['*.yml'] }).use(yaml);
 
-		await contently.discover();
+		await cocy.discover();
 
 		const first = path.join(cwd, 'first.yml');
 
-		const firstFile = contently.files.get(first);
+		const { data } = cocy.files.get(first);
 
-		expect(firstFile.data).toEqual({ foo: 'bar' });
+		expect(data).toEqual({ foo: 'bar' });
 	});
 });

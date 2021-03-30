@@ -9,7 +9,7 @@ import yaml from 'yaml';
 
 import { assetResolver, excerptGenerator } from './plugins';
 
-import Contently, { ContentlyFile } from 'contently';
+import Cocy, { CocyFile } from 'cocy';
 import { titleGenerator } from './plugins/titleGenerator';
 
 type RemarkPlugins = Array<{ plugin: any; options?: any }>;
@@ -52,10 +52,10 @@ type MdData = {
 	vfile: vfile.VFile;
 };
 
-export type ContentlyMdFile = ContentlyFile<MdData>;
+export type CocyMdFile = CocyFile<MdData>;
 
-export default async function ContentlyTransformMarkdown(
-	instance: Contently,
+export default async function CocyTransformMarkdown(
+	instance: Cocy,
 	_options?: Options
 ): Promise<void> {
 	const options = {
@@ -66,7 +66,7 @@ export default async function ContentlyTransformMarkdown(
 		...(_options || {})
 	};
 
-	async function process(file: ContentlyFile): Promise<void> {
+	async function process(file: CocyFile): Promise<void> {
 		if (file.mimeType !== 'text/markdown') return;
 
 		const u = unified();

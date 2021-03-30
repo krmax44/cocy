@@ -1,17 +1,17 @@
 import fs from 'fs/promises';
 import path from 'path';
-import Contently, { ContentlyFile } from 'contently';
+import Cocy, { CocyFile } from 'cocy';
 
 interface Options {
 	/**
 	 * Attributes, which should be rendered to JSON.
 	 * @default slug,attributes,data,assets
 	 */
-	fields?: Array<keyof ContentlyFile>;
+	fields?: Array<keyof CocyFile>;
 
 	/**
 	 * Output directory for built JSON files, relative to the instance's cwd.
-	 * @default outDir contently in cwd's parent directory
+	 * @default outDir cocy in cwd's parent directory
 	 */
 	outDir?: string;
 
@@ -28,20 +28,20 @@ const mapToObj = <K extends string, V>(map: Map<K, V>) =>
 		{}
 	);
 
-const defaultFields: Array<keyof ContentlyFile> = [
+const defaultFields: Array<keyof CocyFile> = [
 	'slug',
 	'attributes',
 	'data',
 	'assets'
 ];
 
-export default async function ContentlyRenderJSON(
-	instance: Contently,
+export default async function CocyRenderJSON(
+	instance: Cocy,
 	options: Options = {}
 ): Promise<void> {
 	const outDir = path.resolve(
 		instance.options.cwd,
-		options.outDir ?? '../contently'
+		options.outDir ?? '../cocy'
 	);
 	const fields: string[] = options.fields ?? defaultFields;
 
@@ -54,7 +54,7 @@ export default async function ContentlyRenderJSON(
 	instance.on('fileUpdated', renderFile);
 	instance.on('fileRemoved', removeFile);
 
-	function determineLocation(file: ContentlyFile) {
+	function determineLocation(file: CocyFile) {
 		const relativePath = path.relative(instance.options.cwd, file.path);
 		const { dir, name } = path.parse(relativePath);
 
@@ -64,7 +64,7 @@ export default async function ContentlyRenderJSON(
 		return { folder, filepath };
 	}
 
-	async function renderFile(file: ContentlyFile) {
+	async function renderFile(file: CocyFile) {
 		const json = JSON.stringify(file, (key, value) => {
 			if (!key) return value;
 			if (!fields.includes(key)) return undefined;
@@ -78,7 +78,7 @@ export default async function ContentlyRenderJSON(
 		await fs.writeFile(filepath, json);
 	}
 
-	function removeFile(file: ContentlyFile) {
+	function removeFile(file: CocyFile) {
 		try {
 			const { filepath } = determineLocation(file);
 			fs.unlink(filepath);

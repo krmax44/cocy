@@ -1,25 +1,25 @@
-import ContentlyFile from '../ContentlyFile';
+import CocyFile from '../CocyFile';
 
-export type ContentlyEvents = {
+export type CocyEvents = {
 	/**
 	 * Triggered when a new file was added.
 	 */
-	fileAdded: [file: ContentlyFile];
+	fileAdded: [file: CocyFile];
 
 	/**
 	 * Triggered when a file was removed.
 	 */
-	fileRemoved: [file: ContentlyFile];
+	fileRemoved: [file: CocyFile];
 
 	/**
 	 * Triggered when a file's content changed.
 	 */
-	fileUpdated: [file: ContentlyFile];
+	fileUpdated: [file: CocyFile];
 
 	/**
 	 * Triggered when any file event occured (added, deleted...)
 	 */
-	fileChanged: [file: ContentlyFile];
+	fileChanged: [file: CocyFile];
 
 	/**
 	 * Triggered when a new asset was found.
@@ -27,7 +27,7 @@ export type ContentlyEvents = {
 	assetAdded: [
 		resolve: (resolvedPath: string) => void,
 		assetPath: string,
-		file: ContentlyFile,
+		file: CocyFile,
 		key?: string
 	];
 };

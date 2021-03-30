@@ -1,6 +1,6 @@
 {
-  "name": "@contentlyjs/transform-markdown",
-  "version": "1.0.0",
+  "name": "@cocy/transform-md",
+  "version": "1.0.0-alpha.0",
   "license": "MIT",
   "files": [
     "dist"
@@ -13,13 +13,13 @@
   },
   "author": "krmax44<hi@krmax44.de>",
   "repository": {
-    "url": "https://github.com/krmax44/contently.git",
+    "url": "https://github.com/krmax44/cocy.git",
     "type": "git",
-    "directory": "packages/transform-markdown"
+    "directory": "packages/transform-md"
   },
   "dependencies": {
     "always-array": "^1.1.0",
-    "contently": "^1.0.0",
+    "cocy": "^1.0.0-alpha.0",
     "remark": "^13.0.0",
     "remark-extract-frontmatter": "^3.1.0",
     "remark-frontmatter": "^3.0.0",

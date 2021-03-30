@@ -4,7 +4,7 @@ title: Hello!
 
 # Hello World
 
-Hello from Contently!
+Hello from Cocy!
 
 <!-- more -->
 

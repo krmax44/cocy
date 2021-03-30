@@ -1,17 +1,17 @@
-import Contently from 'contently';
-import ContentlyTransformMarkdown from '..';
+import Cocy from 'cocy';
+import CocyTransformMarkdown from '..';
 
 describe('readme example', () => {
 	test('example works', async () => {
-		const contently = await new Contently({
+		const cocy = await new Cocy({
 			patterns: ['./fixtures/readme/*.md'],
 			cwd: __dirname
 		})
-			.use(ContentlyTransformMarkdown)
+			.use(CocyTransformMarkdown)
 			.discover();
 
 		const logs = [];
-		for (const file of contently.files.values()) {
+		for (const file of cocy.files.values()) {
 			logs.push(file.slug);
 		}
 

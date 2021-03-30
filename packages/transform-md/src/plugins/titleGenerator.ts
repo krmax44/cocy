@@ -2,15 +2,15 @@
 
 import { Node } from 'unist';
 import { VFile } from 'vfile';
-import type Contently from 'contently';
-import type { ContentlyFile } from 'contently';
+import type Cocy from 'cocy';
+import type { CocyFile } from 'cocy';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const find = require('unist-util-find');
 
 type Options = {
-	instance: Contently;
-	file: ContentlyFile;
+	instance: Cocy;
+	file: CocyFile;
 	title: boolean;
 	slug: boolean;
 };

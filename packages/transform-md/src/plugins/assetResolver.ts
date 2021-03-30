@@ -1,7 +1,7 @@
 import visit from 'unist-util-visit';
 import { Node } from 'unist';
 import { VFile } from 'vfile';
-import { ContentlyFile } from 'contently';
+import { CocyFile } from 'cocy';
 
 interface Image extends Node {
 	type: 'image';
@@ -14,9 +14,9 @@ interface AssetVFile extends VFile {
 	data: Record<string, any>;
 }
 
-type Options = { file: ContentlyFile };
+type Options = { file: CocyFile };
 
-export function assetResolver({ file: contentlyFile }: Options): any {
+export function assetResolver({ file: cocyFile }: Options): any {
 	return async function (tree: Node, file: AssetVFile, next: () => void) {
 		const allAssets = new Map();
 
@@ -28,10 +28,7 @@ export function assetResolver({ file: contentlyFile }: Options): any {
 				if (allAssets.has(url)) {
 					file.data.assets[asset] = allAssets.get(url);
 				} else {
-					file.data.assets[asset] = await contentlyFile.resolveAsset(
-						url,
-						asset
-					);
+					file.data.assets[asset] = await cocyFile.resolveAsset(url, asset);
 
 					allAssets.set(url, file.data.assets[asset]);
 				}
@@ -46,7 +43,7 @@ export function assetResolver({ file: contentlyFile }: Options): any {
 			if (allAssets.has(node.url)) {
 				node.url = allAssets.get(node.url);
 			} else {
-				const promise = contentlyFile.resolveAsset(node.url).then(url => {
+				const promise = cocyFile.resolveAsset(node.url).then(url => {
 					if (!url) return;
 
 					allAssets.set(node.url, url);

@@ -1,10 +1,12 @@
 import yaml from 'yaml';
-import Contently, { ContentlyFile } from 'contently';
+import Cocy, { CocyFile } from 'cocy';
 
-export default async function ContentlyTransformMarkdown(
-	instance: Contently
+export type CocyFileYaml = CocyFile<Record<string, any>>;
+
+export default async function CocyTransformMarkdown(
+	instance: Cocy
 ): Promise<void> {
-	async function process(file: ContentlyFile): Promise<void> {
+	async function process(file: CocyFile): Promise<void> {
 		if (file.mimeType !== 'text/yaml') return;
 
 		if (file.raw) {

@@ -1,11 +1,11 @@
-# Contently Transform Yaml
+# Cocy Transform Yaml
 
 Transforms `yaml` files.
 
 ## Usage
 
 ```ts
-import yaml from '@contentlyjs/transform-yaml';
+import yaml from '@cocy/transform-yaml';
 
-contently.use(yaml);
+cocy.use(yaml);
 ```
