@@ -18,6 +18,8 @@ jobs:
       - run: yarn install
       - name: Lint
         run: yarn lint
+      - name: Test types
+        run: yarn test:types
       - name: Build
         run: yarn build
       - name: Test

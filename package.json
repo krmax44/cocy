@@ -6,7 +6,8 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "tsc --noEmit && jest",
+    "test": "jest",
+    "test:types": "tsc --noEmit",
     "test:watch": "jest --watch",
     "lint": "eslint --ignore-path .gitignore .",
     "build": "lerna run build"
