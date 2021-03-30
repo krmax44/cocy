@@ -12,7 +12,7 @@
     "lint": "eslint --ignore-path .gitignore .",
     "check-all": "yarn test && yarn test:types && yarn lint",
     "build": "lerna run build",
-    "prepare": "husky install"
+    "prepare": "husky install && lerna link"
   },
   "eslintConfig": {
     "root": true,
