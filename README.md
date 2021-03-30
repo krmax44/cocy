@@ -6,14 +6,16 @@
 
 Cocy takes your static-file content and turns it into a consumable API for your [JAMstack](https://jamstack.org) site. The headless content management library, no matter what framework you're using.
 
-## Documentation
+## Packages
 
 Docs are provided per package.
 
-- [cocy](./packages/cocy/README.md) - main docs
-- [transform-markdown](./packages/transform-md/README.md)
-- [transform-yaml](./packages/transform-yaml/README.md)
-- [render-json](./packages/render-json/README.md)
+| Name                                                  | Description                | Package                                                                                                                 |
+| ----------------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| [cocy](./packages/cocy/README.md)                     | main docs                  | [![npm version](https://img.shields.io/npm/v/cocy)](https://www.npmjs.com/package/cocy)                                 |
+| [transform-md](./packages/transform-md/README.md)     | Transform Markdown to HTML | [![npm version](https://img.shields.io/npm/v/@cocy/transform-md)](https://www.npmjs.com/package/@cocy/transform-md)     |
+| [transform-yaml](./packages/transform-yaml/README.md) | Parse YAML files           | [![npm version](https://img.shields.io/npm/v/@cocy/transform-yaml)](https://www.npmjs.com/package/@cocy/transform-yaml) |
+| [render-json](./packages/render-json/README.md)       | Output static JSON files   | [![npm version](https://img.shields.io/npm/v/@cocy/render-json)](https://www.npmjs.com/package/@cocy/render-json)       |
 
 ## Roadmap to v1
 
