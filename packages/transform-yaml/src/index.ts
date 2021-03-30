@@ -5,6 +5,8 @@ export default async function ContentlyTransformMarkdown(
 	instance: Contently
 ): Promise<void> {
 	async function process(file: ContentlyFile): Promise<void> {
+		if (file.mimeType !== 'text/yaml') return;
+
 		if (file.raw) {
 			const parsed = yaml.parse(file.raw);
 			file.data = parsed;

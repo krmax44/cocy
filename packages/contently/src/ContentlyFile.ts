@@ -1,6 +1,7 @@
 import { readFile } from 'fs/promises';
 import Houk from 'houk';
 import { parse } from 'path';
+import mime from 'mime-types';
 import Contently from '.';
 import fstat from './utils/fstat';
 
@@ -20,6 +21,11 @@ export default class ContentlyFile<DataType = any> extends Houk<{
 	 * Absolute path to the file
 	 */
 	public path: string;
+
+	/**
+	 * Mime type of the file
+	 */
+	public mimeType: string | false;
 
 	/**
 	 * Slug of the file
@@ -53,6 +59,8 @@ export default class ContentlyFile<DataType = any> extends Houk<{
 		super();
 
 		this.path = path;
+		this.mimeType = mime.lookup(path);
+
 		const slug = this.instance.options.slugify(parse(path).name);
 		this.slug = this.setSlug(slug);
 

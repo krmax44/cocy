@@ -18,11 +18,13 @@
     "directory": "packages/contently"
   },
   "dependencies": {
+    "@types/mime-types": "^2.1.0",
     "chokidar": "^3.5.1",
     "git-fstat": "^1.0.0",
     "globby": "^11.0.2",
     "houk": "^3.1.0",
     "is-repo": "^1.0.1",
+    "mime-types": "^2.1.29",
     "slugo": "^0.3.1"
   },
   "devDependencies": {

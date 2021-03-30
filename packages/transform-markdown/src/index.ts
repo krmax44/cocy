@@ -67,6 +67,8 @@ export default async function ContentlyTransformMarkdown(
 	};
 
 	async function process(file: ContentlyFile): Promise<void> {
+		if (file.mimeType !== 'text/markdown') return;
+
 		const u = unified();
 
 		const plugins = [...options.plugins];
