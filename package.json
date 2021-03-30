@@ -10,7 +10,9 @@
     "test:types": "tsc --noEmit",
     "test:watch": "jest --watch",
     "lint": "eslint --ignore-path .gitignore .",
-    "build": "lerna run build"
+    "check-all": "yarn test && yarn test:types && yarn lint",
+    "build": "lerna run build",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "root": true,
@@ -39,10 +41,17 @@
     "bracketSpacing": true,
     "useTabs": true
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-typescript": "^7.12.13",
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
@@ -51,7 +60,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "globby": "^11.0.2",
-    "husky": "^4.3.8",
+    "husky": "^6.0.0",
     "jest": "^26.6.3",
     "lerna": "^4.0.0",
     "prettier": "^2.2.1",

@@ -1,14 +1,16 @@
 {
-	"packages": ["packages/*"],
+	"packages": [
+		"packages/*"
+	],
 	"npmClient": "yarn",
 	"useWorkspaces": true,
 	"command": {
 		"publish": {
+			"conventionalCommits": true,
 			"ignoreChanges": [
 				"**/tests/**",
 				"*.md"
-			],
-			"message": "chore(release): publish"
+			]
 		},
 		"version": {
 			"signGitCommit": true
