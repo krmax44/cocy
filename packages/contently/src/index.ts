@@ -178,7 +178,7 @@ export default class Contently extends Houk<ContentlyEvents> {
 	public use<Plugin extends (instance: Contently, ...args: any) => void>(
 		plugin: Plugin,
 		...options: DropFirstInTuple<Parameters<Plugin>>
-	): Contently {
+	): this {
 		plugin(this, ...options);
 		return this;
 	}
