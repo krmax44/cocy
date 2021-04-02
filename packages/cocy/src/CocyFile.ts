@@ -107,7 +107,7 @@ export default class CocyFile<DataType = any> {
 	 * @param slugify Slugify the text using the set slugify function. True by default.
 	 */
 	public setSlug(text: string, slugify = true): string {
-		if (!text) throw `Invalid text`;
+		if (!text) throw 'Invalid text';
 
 		// give the current slug up for reuse
 		this.instance.slugs.delete(this.slug);

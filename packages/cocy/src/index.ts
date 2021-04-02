@@ -73,6 +73,8 @@ export default class Cocy extends Houk<CocyEvents> {
 		}
 		await Promise.all(queue);
 
+		this.emit('afterDiscover');
+
 		return this;
 	}
 

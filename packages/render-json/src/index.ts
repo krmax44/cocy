@@ -1,28 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
-import Cocy, { CocyFile } from 'cocy';
 
-type CocyFileFields = Array<keyof CocyFile>;
-
-interface Options {
-	/**
-	 * Attributes, which should be rendered to JSON.
-	 * @default slug,attributes,data,assets
-	 */
-	fields?: CocyFileFields;
-
-	/**
-	 * Output directory for built JSON files, relative to the instance's cwd.
-	 * @default outDir cocy in cwd's parent directory
-	 */
-	outDir?: string;
-
-	/**
-	 * Clean directory before build
-	 * @default clean false
-	 */
-	clean?: boolean;
-}
+import type Cocy from 'cocy';
+import type { CocyFile } from 'cocy';
+import { CocyFileFields, DestLocation, Options } from './types';
 
 const mapToObj = <K extends string, V>(map: Map<K, V>) =>
 	Array.from(map.entries()).reduce(
@@ -46,8 +27,9 @@ export default async function CocyRenderJSON(
 	instance.on('fileAdded', renderFile);
 	instance.on('fileUpdated', renderFile);
 	instance.on('fileRemoved', removeFile);
+	instance.on('afterDiscover', renderIndex);
 
-	function determineLocation(file: CocyFile) {
+	function determineLocation(file: CocyFile): DestLocation {
 		const { dir } = path.parse(file.path.relative);
 
 		const folder = path.resolve(outDir, dir);
@@ -57,10 +39,18 @@ export default async function CocyRenderJSON(
 	}
 
 	async function renderFile(file: CocyFile) {
-		const picked = fields.reduce((obj, key) => {
-			obj[key] = file[key];
-			return obj;
-		}, {} as Record<string, any>);
+		let picked;
+
+		if (options.transformer) {
+			picked = await Promise.resolve(options.transformer(file, instance));
+		} else {
+			picked = fields.reduce((obj, key) => {
+				obj[key] = file[key];
+				return obj;
+			}, {} as Record<string, any>);
+		}
+
+		if (picked === undefined) return;
 
 		const json = JSON.stringify(picked, (_, value) =>
 			value instanceof Map ? mapToObj(value) : value
@@ -69,6 +59,17 @@ export default async function CocyRenderJSON(
 		const { folder, filepath } = determineLocation(file);
 		await fs.mkdir(folder, { recursive: true });
 		await fs.writeFile(filepath, json);
+	}
+
+	async function renderIndex() {
+		const data = await Promise.resolve(
+			options.indexGenerator?.(instance, determineLocation)
+		);
+
+		if (data) {
+			const dest = path.resolve(outDir, options.indexFile ?? '_index.json');
+			await fs.writeFile(dest, JSON.stringify(data));
+		}
 	}
 
 	function removeFile(file: CocyFile) {

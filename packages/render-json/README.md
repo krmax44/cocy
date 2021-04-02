@@ -12,18 +12,4 @@ cocy.use(CocyRenderJSON, options?);
 
 ## Options
 
-```ts
-interface Options {
-	/**
-	 * Output directory for built JSON files
-	 * @default outDir cocy in cwd's parent
-	 */
-	outDir?: string;
-
-	/**
-	 * Clean directory before build
-	 * @default clean false
-	 */
-	clean?: boolean;
-}
-```
+See [here](./src/types.ts).

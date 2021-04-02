@@ -30,4 +30,9 @@ export type CocyEvents = {
 		file: CocyFile,
 		key?: string
 	];
+
+	/**
+	 * Triggered after .discover() has finished
+	 */
+	afterDiscover: [];
 };

@@ -12,23 +12,7 @@ cocy.use(md, options?);
 
 ## Options
 
-```ts
-interface Options {
-	/**
-	 * If true, generates an excerpt.
-	 * @name generateExcerpt
-	 * @default true
-	 */
-	generateExcerpt?: boolean;
-
-	/**
-	 * @name plugins
-	 * @description An array of Remark plugins.
-	 * @default 'html,frontmatter,extract-frontmatter'
-	 */
-	plugins: Array<{ plugin: any; options?: any }>;
-}
-```
+See [here](./src/types.ts).
 
 ## Frontmatter assets
 
