@@ -1,7 +1,7 @@
 import path from 'path';
 import Cocy from '..';
 
-const FIXTURE_ROOT = path.join(__dirname, 'fixture-basic');
+const FIXTURE_ROOT = path.join(__dirname, 'fixture-2');
 const TEST_FILE_1 = path.join(FIXTURE_ROOT, 'test.md');
 const TEST_FILE_2 = path.join(FIXTURE_ROOT, 'file-2.md');
 

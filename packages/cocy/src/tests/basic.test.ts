@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 import Cocy from '..';
 import wait from 'waait';
 
-const FIXTURE_ROOT = path.join(__dirname, 'fixture-basic');
+const FIXTURE_ROOT = path.join(__dirname, 'fixture-1');
 const TEST_FILE = path.join(FIXTURE_ROOT, 'test.md');
 
 const TEST_FOLDER = path.join(FIXTURE_ROOT, 'folder');
