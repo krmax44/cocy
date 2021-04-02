@@ -1,5 +1,5 @@
 import path from 'path';
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
 import Cocy from '..';
 import wait from 'waait';
 

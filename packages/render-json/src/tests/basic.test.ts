@@ -1,6 +1,6 @@
 import path from 'path';
 import { existsSync } from 'fs';
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
 import Cocy from 'cocy';
 import renderJSON from '..';
 import wait from 'waait';
