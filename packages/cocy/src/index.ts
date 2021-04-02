@@ -34,7 +34,7 @@ export default class Cocy extends Houk<CocyEvents> {
 
 	private watcher?: chokidar.FSWatcher;
 
-	constructor(options: CocyOptions) {
+	constructor(options: CocyOptions = {}) {
 		super();
 
 		const cwd = process.cwd();
@@ -188,4 +188,6 @@ export default class Cocy extends Houk<CocyEvents> {
 	}
 }
 
-export { CocyOptions, CocyFile };
+export type { CocyOptions, CocyFile };
+export type { CocyFileAttributes, CocyPath } from './CocyFile';
+export type { CocyFiles };

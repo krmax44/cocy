@@ -5,8 +5,7 @@ import alwaysArray from 'always-array';
 import { Node } from 'unist';
 import { VFile } from 'vfile';
 
-const isComment = /<!--(.*?)-->'/;
-const getComment = /'<!--([\\sS]*?)-->'/;
+const isComment = /<!-{2,}(.*?)-{2,}>/; //  matches <!-- html comments -->
 
 interface Options {
 	identifiers?: string | string[];
@@ -27,15 +26,13 @@ export function excerptGenerator(options?: Options): any {
 			const treeChildren = [...(tree.children as Node[])];
 
 			visit(tree, 'html', (node: Html) => {
-				if (excerptIndex === -1 && isComment.test(node.value)) {
-					const comment = getComment.exec(node.value);
+				const comment = isComment.exec(node.value);
 
-					if (comment) {
-						const text = comment[1].trim();
+				if (excerptIndex === -1 && comment) {
+					const text = comment[1].trim();
 
-						if (identifiers.includes(text)) {
-							excerptIndex = treeChildren.indexOf(node);
-						}
+					if (identifiers.includes(text)) {
+						excerptIndex = treeChildren.indexOf(node);
 					}
 				}
 			});

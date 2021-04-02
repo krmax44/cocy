@@ -11,7 +11,7 @@ import { assetResolver, excerptGenerator } from './plugins';
 import type { MdData, RemarkPlugins, Options } from './types';
 
 import type Cocy from 'cocy';
-import type { CocyFile } from 'cocy';
+import type { CocyFile, CocyFileAttributes } from 'cocy';
 import { titleGenerator } from './plugins/titleGenerator';
 
 export const defaultPlugins: RemarkPlugins = [
@@ -21,7 +21,13 @@ export const defaultPlugins: RemarkPlugins = [
 	{ plugin: html }
 ];
 
-export type CocyMdFile = CocyFile<MdData>;
+interface MdAttributes extends CocyFileAttributes {
+	title?: string;
+	excerpt?: string;
+}
+export interface CocyMdFile extends CocyFile<MdData> {
+	attributes: MdAttributes;
+}
 
 export default function CocyTransformMarkdown(
 	instance: Cocy,

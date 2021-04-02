@@ -12,11 +12,8 @@ describe('transform markdown', () => {
 
 		await cocy.discover();
 
-		const first = path.join(cwd, 'Hello-World.md');
-		const second = path.join(cwd, 'Second-Post.md');
-
-		const firstFile: CocyMdFile = cocy.files.get(first);
-		const secondFile: CocyMdFile = cocy.files.get(second);
+		const firstFile: CocyMdFile = cocy.files.getBySlug('hello');
+		const secondFile: CocyMdFile = cocy.files.getBySlug('second-post-yeah');
 
 		expect(firstFile.data.html).toBe(
 			'<h1>Hello World</h1>\n' +
@@ -27,6 +24,7 @@ describe('transform markdown', () => {
 		);
 		expect(firstFile.attributes.title).toBe('Hello!');
 		expect(firstFile.slug).toBe('hello');
+		expect(firstFile.attributes.excerpt).toBe('Hello from Cocy!');
 
 		expect(secondFile.data.html).toBe(
 			'<h1>Second Post Yeah</h1>\n<p>This is the second post!</p>\n'

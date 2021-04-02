@@ -11,7 +11,7 @@ export type CocyFileAttributes = {
 	modifiedAt?: Date;
 };
 
-interface CocyPath extends ParsedPath {
+export interface CocyPath extends ParsedPath {
 	absolute: string;
 	relative: string;
 }

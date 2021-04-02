@@ -1,14 +1,13 @@
 import Cocy from 'cocy';
-import CocyTransformMarkdown from '..';
+import md from '..';
 
 describe('readme example', () => {
 	test('example works', async () => {
-		const cocy = await new Cocy({
+		const cocy = new Cocy({
 			patterns: ['./fixtures/readme/*.md'],
 			cwd: __dirname
-		})
-			.use(CocyTransformMarkdown)
-			.discover();
+		}).use(md);
+		await cocy.discover();
 
 		const logs = [];
 		for (const file of cocy.files.values()) {
