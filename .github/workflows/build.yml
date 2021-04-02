@@ -11,9 +11,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
         node_version:
-          - 12
           - 14
-          - 15
 
     steps:
       - uses: actions/checkout@v2
