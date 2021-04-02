@@ -26,6 +26,15 @@ see [TODO](https://github.com/krmax44/cocy/search?q=TODO) in code, also:
 - [ ] extensive testing
 - [x] new name
 
+## Platform support
+
+| Platform | working | pending |
+| -------- | ------- | ------- |
+| Node.js  | 14+     | 12+     |
+| Linux    | yes     |         |
+| Windows  | no      | yes     |
+| macOS    | ?       | yes     |
+
 ## Example
 
 ```
