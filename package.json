@@ -39,7 +39,8 @@
     "arrowParens": "avoid",
     "trailingComma": "none",
     "bracketSpacing": true,
-    "useTabs": true
+    "useTabs": true,
+    "endOfLine": "auto"
   },
   "commitlint": {
     "extends": [
