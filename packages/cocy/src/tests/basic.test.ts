@@ -47,7 +47,7 @@ describe('basic tests', () => {
 
 		expect(cocy.files.has(TEST_FILE_2)).toBe(false);
 
-		await fs.rmdir(TEST_FOLDER, { recursive: true });
+		await fs.rm(TEST_FOLDER, { recursive: true }).catch(() => 0);
 		await wait(200);
 
 		expect(cocy.files.has(TEST_FILE_DEEP)).toBe(false);

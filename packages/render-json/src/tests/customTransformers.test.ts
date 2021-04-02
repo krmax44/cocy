@@ -42,6 +42,6 @@ describe('render JSON', () => {
 
 	afterAll(() => {
 		cocy.stopWatcher();
-		fs.rm(outDir, { recursive: true });
+		fs.rm(outDir, { recursive: true }).catch(() => 0);
 	});
 });

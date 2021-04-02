@@ -21,7 +21,7 @@ export default async function CocyRenderJSON(
 	const fields: CocyFileFields = options.fields ?? defaultFields;
 
 	if (options.clean) {
-		fs.rmdir(outDir, { recursive: true });
+		fs.rm(outDir, { recursive: true }).catch(() => 0);
 	}
 
 	instance.on('fileAdded', renderFile);
