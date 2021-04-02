@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import { readFile } from 'fs/promises';
 import { parse, relative } from 'path';
 import type { ParsedPath } from 'path';
 import mime from 'mime-types';
@@ -69,7 +69,7 @@ export default class CocyFile<DataType = any> {
 	public async load(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
-				fs.readFile(this.path.absolute, 'utf-8').then(data => {
+				readFile(this.path.absolute, 'utf-8').then(data => {
 					this.raw = data;
 					resolve();
 				});

@@ -1,5 +1,5 @@
 import gitFstat from 'git-fstat';
-import { promises as fs } from 'fs';
+import { stat } from 'fs/promises';
 
 export default async function fstats(
 	path: string,
@@ -14,6 +14,6 @@ export default async function fstats(
 		}
 	} catch {} // eslint-disable-line no-empty
 
-	const { birthtime: createdAt, mtime: modifiedAt } = await fs.stat(path);
+	const { birthtime: createdAt, mtime: modifiedAt } = await stat(path);
 	return { createdAt, modifiedAt };
 }
