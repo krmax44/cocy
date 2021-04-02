@@ -2,12 +2,14 @@ import fs from 'fs/promises';
 import path from 'path';
 import Cocy, { CocyFile } from 'cocy';
 
+type CocyFileFields = Array<keyof CocyFile>;
+
 interface Options {
 	/**
 	 * Attributes, which should be rendered to JSON.
 	 * @default slug,attributes,data,assets
 	 */
-	fields?: Array<keyof CocyFile>;
+	fields?: CocyFileFields;
 
 	/**
 	 * Output directory for built JSON files, relative to the instance's cwd.
@@ -28,26 +30,17 @@ const mapToObj = <K extends string, V>(map: Map<K, V>) =>
 		{}
 	);
 
-const defaultFields: Array<keyof CocyFile> = [
-	'slug',
-	'attributes',
-	'data',
-	'assets'
-];
+const defaultFields: CocyFileFields = ['slug', 'attributes', 'data', 'assets'];
 
 export default async function CocyRenderJSON(
 	instance: Cocy,
 	options: Options = {}
 ): Promise<void> {
-	const outDir = path.resolve(
-		instance.options.cwd,
-		options.outDir ?? '../cocy'
-	);
-	const fields: string[] = options.fields ?? defaultFields;
+	const outDir = path.resolve(instance.cwd, options.outDir ?? 'cocy');
+	const fields: CocyFileFields = options.fields ?? defaultFields;
 
 	if (options.clean) {
-		await fs.rmdir(outDir, { recursive: true });
-		await fs.mkdir(outDir);
+		fs.rmdir(outDir, { recursive: true });
 	}
 
 	instance.on('fileAdded', renderFile);
@@ -55,23 +48,23 @@ export default async function CocyRenderJSON(
 	instance.on('fileRemoved', removeFile);
 
 	function determineLocation(file: CocyFile) {
-		const relativePath = path.relative(instance.options.cwd, file.path);
-		const { dir, name } = path.parse(relativePath);
+		const { dir } = path.parse(file.path.relative);
 
 		const folder = path.resolve(outDir, dir);
-		const filepath = path.resolve(folder, `${name}.json`);
+		const filepath = path.resolve(folder, `${file.path.name}.json`);
 
 		return { folder, filepath };
 	}
 
 	async function renderFile(file: CocyFile) {
-		const json = JSON.stringify(file, (key, value) => {
-			if (!key) return value;
-			if (!fields.includes(key)) return undefined;
+		const picked = fields.reduce((obj, key) => {
+			obj[key] = file[key];
+			return obj;
+		}, {} as Record<string, any>);
 
-			if (value instanceof Map) return mapToObj(value);
-			return value;
-		});
+		const json = JSON.stringify(picked, (_, value) =>
+			value instanceof Map ? mapToObj(value) : value
+		);
 
 		const { folder, filepath } = determineLocation(file);
 		await fs.mkdir(folder, { recursive: true });

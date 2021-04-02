@@ -6,7 +6,7 @@ const TEST_FILE_1 = path.join(FIXTURE_ROOT, 'test.md');
 const TEST_FILE_2 = path.join(FIXTURE_ROOT, 'file-2.md');
 
 describe('slug generation', () => {
-	const cocy = new Cocy({ cwd: FIXTURE_ROOT });
+	const cocy = new Cocy({ cwd: FIXTURE_ROOT, patterns: ['**/*.md'] });
 
 	test('finds all files', async () => {
 		await cocy.discover();

@@ -6,7 +6,7 @@ describe('transform YAML', () => {
 	it('should transform all files', async () => {
 		const cwd = path.join(__dirname, 'fixtures/basic/');
 
-		const cocy = new Cocy({ cwd, patterns: ['*.yml'] }).use(yaml);
+		const cocy = new Cocy({ cwd }).use(yaml);
 
 		await cocy.discover();
 

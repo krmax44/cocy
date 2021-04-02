@@ -49,7 +49,7 @@ export default class CocyFiles extends Map<string, CocyFile> {
 	 * @returns file, if found
 	 */
 	public getByPath(...segments: string[]): CocyFile | undefined {
-		const file = path.join(this.instance.options.cwd, ...segments);
+		const file = path.join(this.instance.cwd, ...segments);
 		return this.get(file);
 	}
 
@@ -59,7 +59,17 @@ export default class CocyFiles extends Map<string, CocyFile> {
 	 * @returns files
 	 */
 	public getInDir(_dir: string): CocyFile[] {
-		const dir = path.join(this.instance.options.cwd, _dir);
-		return this.filter(file => file.path.startsWith(dir));
+		const dir = path.join(this.instance.cwd, _dir);
+		return this.filter(file => file.path.dir === dir);
+	}
+
+	/**
+	 * get all files that are located in a given directory, or in one of its subdirectories
+	 * @param _dir relative or absolute path to dir
+	 * @returns files
+	 */
+	public getInDirDeep(_dir: string): CocyFile[] {
+		const dir = path.join(this.instance.cwd, _dir);
+		return this.filter(file => file.path.dir.startsWith(dir));
 	}
 }

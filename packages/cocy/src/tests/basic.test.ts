@@ -10,18 +10,22 @@ const TEST_FOLDER = path.join(FIXTURE_ROOT, 'folder');
 const TEST_FILE_DEEP = path.join(TEST_FOLDER, 'inner.md');
 
 describe('basic tests', () => {
-	const cocy = new Cocy({ cwd: FIXTURE_ROOT, watch: true });
-
 	test('finds all files', async () => {
 		expect.assertions(8);
 
 		await fs.mkdir(TEST_FOLDER);
 		await fs.writeFile(TEST_FILE_DEEP, '');
 
+		const cocy = new Cocy({
+			cwd: FIXTURE_ROOT,
+			watch: true,
+			patterns: ['**/*.md']
+		});
+
 		await cocy.discover();
 		const file = cocy.files.get(TEST_FILE);
 
-		expect(file.path).toBe(TEST_FILE);
+		expect(file.path.absolute).toBe(TEST_FILE);
 		expect(file.raw).toBe('Test!\n');
 
 		expect(file.slug).toBe('test');
@@ -35,7 +39,7 @@ describe('basic tests', () => {
 
 		const file2 = cocy.files.get(TEST_FILE_2);
 
-		expect(file2.path).toEqual(TEST_FILE_2);
+		expect(file2.path.absolute).toEqual(TEST_FILE_2);
 		expect(file2.raw).toEqual(TEST_CONTENT);
 
 		await fs.unlink(TEST_FILE_2);

@@ -1,6 +1,6 @@
 import { readFile } from 'fs/promises';
-import Houk from 'houk';
-import { parse } from 'path';
+import { parse, relative } from 'path';
+import type { ParsedPath } from 'path';
 import mime from 'mime-types';
 import Cocy from '.';
 import fstat from './utils/fstat';
@@ -11,16 +11,15 @@ export type CocyFileAttributes = {
 	modifiedAt?: Date;
 };
 
-export default class CocyFile<DataType = any> extends Houk<{
+interface CocyPath extends ParsedPath {
+	absolute: string;
+	relative: string;
+}
+export default class CocyFile<DataType = any> {
 	/**
-	 * File has been read and content saved to `raw`.
+	 * Path to the file
 	 */
-	fileRead: [];
-}> {
-	/**
-	 * Absolute path to the file
-	 */
-	public path: string;
+	readonly path: CocyPath;
 
 	/**
 	 * Mime type of the file
@@ -56,30 +55,32 @@ export default class CocyFile<DataType = any> extends Houk<{
 	public assets = new Map<string, string>();
 
 	constructor(private instance: Cocy, path: string) {
-		super();
-
-		this.path = path;
+		this.path = {
+			...parse(path),
+			relative: relative(instance.cwd, path),
+			absolute: path
+		};
 		this.mimeType = mime.lookup(path);
 
-		const slug = this.instance.options.slugify(parse(path).name);
+		const slug = this.instance.slugify(this.path.name);
 		this.slug = this.setSlug(slug);
-
-		this.load();
 	}
 
-	public load(): void {
-		try {
-			readFile(this.path, 'utf-8').then(data => {
-				this.raw = data;
-				this.emit('fileRead');
-			});
+	public async load(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				readFile(this.path.absolute, 'utf-8').then(data => {
+					this.raw = data;
+					resolve();
+				});
 
-			fstat(this.path, this.instance.isGitRepo).then(attributes => {
-				this.attributes = { ...this.attributes, ...attributes };
-			});
-		} catch {
-			throw `Could not read file ${this.path}`;
-		}
+				fstat(this.path.absolute, this.instance.isGitRepo).then(attributes => {
+					this.attributes = { ...this.attributes, ...attributes };
+				});
+			} catch {
+				reject(`Could not read file ${this.path}`);
+			}
+		});
 	}
 
 	/**
@@ -111,7 +112,7 @@ export default class CocyFile<DataType = any> extends Houk<{
 		// give the current slug up for reuse
 		this.instance.slugs.delete(this.slug);
 
-		const slug = slugify ? this.instance.options.slugify(text) : text;
+		const slug = slugify ? this.instance.slugify(text) : text;
 		let i = 1;
 		let availableSlug = slug;
 

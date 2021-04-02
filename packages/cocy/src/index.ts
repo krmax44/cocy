@@ -6,7 +6,6 @@ import isRepo from 'is-repo';
 import Houk from 'houk';
 import slugify from 'slugo';
 
-import { PATTERNS } from './utils/consts';
 import { CocyOptions } from './types/CocyOptions';
 import { CocyEvents } from './types/CocyEvents';
 import CocyFile from './CocyFile';
@@ -17,32 +16,36 @@ type DropFirstInTuple<T extends any[]> = T extends [arg: any, ...rest: infer U]
 	: T;
 
 export default class Cocy extends Houk<CocyEvents> {
-	public options: CocyOptions;
+	readonly cwd: string;
+	readonly slugify: (input: string) => string;
+
+	/**
+	 * Glob patterns for files
+	 * @name patterns
+	 * @default "[]"
+	 */
+	public patterns: string[];
 	public files: CocyFiles;
 	public isGitRepo = false;
-	private watcher?: chokidar.FSWatcher;
 	public slugs = new Set<string>();
+
 	public getListeners = super.getListeners;
 	public emit = super.emit;
 
-	constructor(options?: Partial<CocyOptions>) {
+	private watcher?: chokidar.FSWatcher;
+
+	constructor(options: CocyOptions) {
 		super();
 
 		const cwd = process.cwd();
-		const watch = process.env.NODE_ENV === 'development';
-
-		this.options = {
-			cwd,
-			watch,
-			patterns: PATTERNS,
-			slugify,
-			...options
-		};
-
-		if (this.options.watch) this.startWatcher();
-
 		// make sure it's absolute
-		this.options.cwd = path.resolve(cwd, this.options.cwd);
+		this.cwd = options.cwd ? path.resolve(cwd, options.cwd) : cwd;
+
+		this.slugify = options.slugify ?? slugify;
+		this.patterns = options.patterns ?? [];
+
+		if (options.watch ?? process.env.NODE_ENV === 'development')
+			this.startWatcher();
 
 		this.files = new CocyFiles(this);
 
@@ -56,12 +59,12 @@ export default class Cocy extends Houk<CocyEvents> {
 	 * @param cwd Directory to search files in
 	 * @default cwd Cocy instance cwd
 	 */
-	async discover(cwd = this.options.cwd): Promise<Cocy> {
-		const files = globby.stream(this.options.patterns, { cwd });
+	async discover(cwd = this.cwd): Promise<this> {
+		const files = globby.stream(this.patterns, { cwd });
 		const queue = [];
 
 		for await (const file of files) {
-			const filepath = path.resolve(cwd, file as string);
+			const filepath = path.resolve(cwd, <string>file);
 
 			if (!this.files.has(filepath)) {
 				const promise = this.add(filepath);
@@ -81,18 +84,16 @@ export default class Cocy extends Houk<CocyEvents> {
 		const exists = this.files.has(filepath);
 		const file = this.files.get(filepath) ?? new CocyFile(this, filepath);
 
+		await file.load();
+
 		if (exists) {
-			// exists, so reload the file
-			file.load();
-			await file.awaitEvent('fileRead');
-			await this.emit('fileUpdated', file);
+			await this.emitSync('fileUpdated', file);
 		} else {
 			this.files.set(filepath, file);
-			await file.awaitEvent('fileRead');
-			await this.emit('fileAdded', file);
+			await this.emitSync('fileAdded', file);
 		}
 
-		await this.emit('fileChanged', file);
+		await this.emitSync('fileChanged', file);
 	}
 
 	/**
@@ -125,7 +126,7 @@ export default class Cocy extends Houk<CocyEvents> {
 	 * @param file
 	 */
 	public update(file: CocyFile): void {
-		this.files.set(file.path, file);
+		this.files.set(file.path.absolute, file);
 	}
 
 	/**
@@ -146,7 +147,7 @@ export default class Cocy extends Houk<CocyEvents> {
 	 * Start watching the file system for changes.
 	 */
 	public startWatcher(): void {
-		const { cwd, patterns } = this.options;
+		const { cwd, patterns } = this;
 
 		this.watcher = chokidar.watch(patterns, { cwd });
 

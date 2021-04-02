@@ -5,7 +5,7 @@ const FIXTURE_ROOT = path.join(__dirname, 'fixture-basic');
 const TEST_FILE = path.join(FIXTURE_ROOT, 'test.md');
 
 function makeInstance() {
-	return new Cocy({ cwd: FIXTURE_ROOT });
+	return new Cocy({ cwd: FIXTURE_ROOT, patterns: ['**/*.md'] });
 }
 
 describe('assets', () => {

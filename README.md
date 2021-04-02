@@ -39,9 +39,7 @@ see [TODO](https://github.com/krmax44/cocy/search?q=TODO) in code, also:
 import Cocy from 'cocy';
 import md from '@cocy/transform-md';
 
-const cocy = new Cocy({ patterns: ['./posts/*.md'] });
-
-cocy.use(md); // use md processor
+const cocy = new Cocy().use(md); // setup Cocy with Markdown transformer
 await cocy.discover(); // search for files
 
 for (const file of cocy.files.values()) {

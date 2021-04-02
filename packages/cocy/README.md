@@ -16,7 +16,7 @@ See [`CocyOptions.ts`](./src/types/CocyOptions.ts).
 
 Files are stored as a map at `cocy.files`. You can for example get a file by its absolute path using `cocy.files.get(absolutePath)`.
 
-The properties of each file object are described [here](./src/types/CocyFile.ts).
+The properties of each file object are described [here](./src/CocyFile.ts).
 
 ```ts
 // it's a map - don't forget `values`
@@ -97,7 +97,7 @@ cocy.on('assetAdded', async (resolve, asset, file) => {
 		// it's a relative file path!
 		// use the file's path as a base
 
-		const absolute = path.join(file.path, '..', asset);
+		const absolute = path.join(file.path.absolute, '..', asset);
 
 		// in this example, we might want to use an image cdn
 		const url = await myCdn.upload(absolute);

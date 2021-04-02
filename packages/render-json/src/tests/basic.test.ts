@@ -5,20 +5,25 @@ import Cocy from 'cocy';
 import renderJSON from '..';
 import wait from 'waait';
 
-const cwd = path.resolve(__dirname, 'fixture', 'input');
+const cwd = path.resolve(__dirname, 'fixture');
 
 // TODO: more extensive tests
 
 describe('render JSON', () => {
-	const cocy = new Cocy({ cwd, watch: true }).use(renderJSON, {
-		outDir: '../cocy.tmp/',
-		fields: ['raw', 'attributes', 'assets', 'path']
-	});
-	const outDir = path.join(cwd, '..', 'cocy.tmp');
+	const cocy = new Cocy({ cwd, watch: true, patterns: ['**/*.md'] }).use(
+		renderJSON,
+		{
+			outDir: './cocy.tmp/',
+			fields: ['raw', 'assets', 'path'],
+			clean: true
+		}
+	);
+	const outDir = path.join(cwd, 'cocy.tmp');
 
 	test('renders all files', async () => {
+		expect.assertions(5);
+
 		await cocy.discover();
-		await wait(200);
 
 		const outfile = path.join(outDir, 'test.json');
 
@@ -27,8 +32,8 @@ describe('render JSON', () => {
 
 		expect(data.raw).toBe('test\n');
 		expect(data.slug).toBe(undefined);
-		expect(data.path).toBe(path.join(cwd, 'test.md'));
-		expect(data.attributes).toEqual({});
+		expect(data.attributes).toBe(undefined);
+		expect(data.path.absolute).toBe(path.join(cwd, 'test.md'));
 		expect(data.assets).toEqual({});
 	});
 
@@ -36,10 +41,11 @@ describe('render JSON', () => {
 	const TEST_CONTENT = 'Test!';
 
 	test('watches files', async () => {
+		expect.assertions(2);
 		await fs.writeFile(TEST_FILE, TEST_CONTENT);
-		await wait(200);
+		await wait(500);
 
-		const outfile = path.join(cwd, '..', 'cocy.tmp', 'test-2.tmp.json');
+		const outfile = path.join(outDir, 'test-2.tmp.json');
 
 		const json = await fs.readFile(outfile, { encoding: 'utf-8' });
 		const data = JSON.parse(json);
@@ -54,6 +60,5 @@ describe('render JSON', () => {
 
 	afterAll(() => {
 		cocy.stopWatcher();
-		fs.rm(outDir, { recursive: true });
 	});
 });

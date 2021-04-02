@@ -8,37 +8,11 @@ import vfile from 'vfile';
 import yaml from 'yaml';
 
 import { assetResolver, excerptGenerator } from './plugins';
+import type { MdData, RemarkPlugins, Options } from './types';
 
-import Cocy, { CocyFile } from 'cocy';
+import type Cocy from 'cocy';
+import type { CocyFile } from 'cocy';
 import { titleGenerator } from './plugins/titleGenerator';
-
-type RemarkPlugins = Array<{ plugin: any; options?: any }>;
-
-interface Options {
-	/**
-	 * If true, generates an excerpt.
-	 * @name generateExcerpt
-	 * @default true
-	 */
-	generateExcerpt?: boolean;
-
-	/**
-	 * If true, generates a title from the file's first heading.
-	 */
-	generateTitle?: boolean;
-
-	/**
-	 * If true, generates a slug from the file's first heading.
-	 */
-	generateSlug?: boolean;
-
-	/**
-	 * An array of Remark plugins.
-	 * @name plugins
-	 * @default 'html,frontmatter,extract-frontmatter'
-	 */
-	plugins?: RemarkPlugins;
-}
 
 export const defaultPlugins: RemarkPlugins = [
 	{ plugin: markdown },
@@ -47,17 +21,12 @@ export const defaultPlugins: RemarkPlugins = [
 	{ plugin: html }
 ];
 
-type MdData = {
-	html: string;
-	vfile: vfile.VFile;
-};
-
 export type CocyMdFile = CocyFile<MdData>;
 
-export default async function CocyTransformMarkdown(
+export default function CocyTransformMarkdown(
 	instance: Cocy,
 	_options?: Options
-): Promise<void> {
+): void {
 	const options = {
 		plugins: defaultPlugins,
 		generateExcerpt: true,
@@ -65,6 +34,10 @@ export default async function CocyTransformMarkdown(
 		generateSlug: true,
 		...(_options || {})
 	};
+
+	if (instance.patterns.length === 0) {
+		instance.patterns.push('**/*.{md,mdwn,markdown}');
+	}
 
 	async function process(file: CocyFile): Promise<void> {
 		if (file.mimeType !== 'text/markdown') return;
@@ -94,12 +67,12 @@ export default async function CocyTransformMarkdown(
 		}
 
 		const { base: basename, name: stem, ext: extname, dir: dirname } = parse(
-			file.path
+			file.path.absolute
 		);
 
 		const v = vfile({
 			contents: file.raw?.toString(),
-			cwd: instance.options.cwd,
+			cwd: instance.cwd,
 			basename,
 			stem,
 			extname,

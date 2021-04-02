@@ -1,11 +1,11 @@
 import yaml from 'yaml';
 import Cocy, { CocyFile } from 'cocy';
 
-export type CocyFileYaml = CocyFile<Record<string, any>>;
+export default async function CocyTransformYaml(instance: Cocy): Promise<void> {
+	if (instance.patterns.length === 0) {
+		instance.patterns.push('**/*.{yml,yaml}');
+	}
 
-export default async function CocyTransformMarkdown(
-	instance: Cocy
-): Promise<void> {
 	async function process(file: CocyFile): Promise<void> {
 		if (file.mimeType !== 'text/yaml') return;
 
