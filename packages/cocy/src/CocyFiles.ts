@@ -14,6 +14,18 @@ export default class CocyFiles extends Map<string, CocyFile> {
 		return [...this.values()];
 	}
 
+	public delete(_file: string | CocyFile): boolean {
+		const file = _file instanceof CocyFile ? _file : this.getByPath(_file);
+
+		if (file) {
+			this.instance.dirs.get(file.path.dir)?.files.delete(file.path.absolute);
+
+			return super.delete(file.path.absolute);
+		}
+
+		return false;
+	}
+
 	/**
 	 * Find a file using Array.find
 	 * @param fn Iterator function

@@ -4,6 +4,7 @@ import type { ParsedPath } from 'path';
 import mime from 'mime-types';
 import Cocy from '.';
 import fstat from './utils/fstat';
+import CocyDir from './CocyDir';
 
 export type CocyFileAttributes = {
 	[key: string]: any;
@@ -20,6 +21,11 @@ export default class CocyFile<DataType = any> {
 	 * Path to the file
 	 */
 	readonly path: CocyPath;
+
+	/**
+	 * Parent directory
+	 */
+	readonly dir: CocyDir;
 
 	/**
 	 * Mime type of the file
@@ -61,6 +67,12 @@ export default class CocyFile<DataType = any> {
 			absolute: path
 		};
 		this.mimeType = mime.lookup(path);
+
+		const { dir } = this.path;
+
+		this.dir = instance.dirs.get(dir) ?? new CocyDir(dir);
+		this.dir.files.set(path, this);
+		instance.dirs.set(dir, this.dir);
 
 		const slug = this.instance.slugify(this.path.name);
 		this.slug = this.setSlug(slug);
@@ -110,18 +122,18 @@ export default class CocyFile<DataType = any> {
 		if (!text) throw 'Invalid text';
 
 		// give the current slug up for reuse
-		this.instance.slugs.delete(this.slug);
+		this.dir.slugs.delete(this.slug);
 
 		const slug = slugify ? this.instance.slugify(text) : text;
 		let i = 1;
 		let availableSlug = slug;
 
-		while (this.instance.slugs.has(availableSlug)) {
+		while (this.dir.slugs.has(availableSlug)) {
 			availableSlug = `${slug}-${i++}`;
 		}
 
 		this.slug = availableSlug;
-		this.instance.slugs.add(availableSlug);
+		this.dir.slugs.add(availableSlug);
 		return availableSlug;
 	}
 }

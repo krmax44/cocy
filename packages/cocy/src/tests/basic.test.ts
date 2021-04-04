@@ -2,9 +2,13 @@ import path from 'path';
 import fs from 'fs/promises';
 import Cocy from '..';
 import wait from 'waait';
+import n from '../utils/n';
 
 const FIXTURE_ROOT = path.join(__dirname, 'fixture-1');
 const TEST_FILE = path.join(FIXTURE_ROOT, 'test.md');
+
+const TEST_FILE_2 = path.join(FIXTURE_ROOT, 'test-2.tmp.md');
+const TEST_CONTENT = 'Test!';
 
 const TEST_FOLDER = path.join(FIXTURE_ROOT, 'folder');
 const TEST_FILE_DEEP = path.join(TEST_FOLDER, 'inner.md');
@@ -31,9 +35,6 @@ describe('basic tests', () => {
 		expect(file.slug).toBe('test');
 		expect(cocy.files.has(TEST_FILE_DEEP)).toBe(true);
 
-		const TEST_FILE_2 = path.join(FIXTURE_ROOT, 'test-2.tmp.md');
-		const TEST_CONTENT = 'Test!';
-
 		await fs.writeFile(TEST_FILE_2, TEST_CONTENT);
 		await wait(100);
 
@@ -47,10 +48,15 @@ describe('basic tests', () => {
 
 		expect(cocy.files.has(TEST_FILE_2)).toBe(false);
 
-		await fs.rm(TEST_FOLDER, { recursive: true }).catch(() => 0);
+		await fs.rm(TEST_FOLDER, { recursive: true }).catch(n);
 		await wait(200);
 
 		expect(cocy.files.has(TEST_FILE_DEEP)).toBe(false);
 		cocy.stopWatcher();
+	});
+
+	afterAll(() => {
+		fs.rm(TEST_FOLDER, { recursive: true }).catch(n);
+		fs.rm(TEST_FILE_2).catch(n);
 	});
 });

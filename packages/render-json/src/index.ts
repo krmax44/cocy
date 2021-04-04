@@ -4,6 +4,7 @@ import path from 'path';
 import type Cocy from 'cocy';
 import type { CocyFile } from 'cocy';
 import { CocyFileFields, DestLocation, Options } from './types';
+import n from './utils/n';
 
 const mapToObj = <K extends string, V>(map: Map<K, V>) =>
 	Array.from(map.entries()).reduce(
@@ -21,7 +22,7 @@ export default async function CocyRenderJSON(
 	const fields: CocyFileFields = options.fields ?? defaultFields;
 
 	if (options.clean) {
-		fs.rm(outDir, { recursive: true }).catch(() => 0);
+		fs.rm(outDir, { recursive: true }).catch(n);
 	}
 
 	instance.on('fileAdded', renderFile);

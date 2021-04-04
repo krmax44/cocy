@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import Cocy from 'cocy';
 import renderJSON from '..';
+import n from '../utils/n';
 
 const cwd = path.resolve(__dirname, 'fixture-2');
 
@@ -42,6 +43,6 @@ describe('render JSON', () => {
 
 	afterAll(() => {
 		cocy.stopWatcher();
-		fs.rm(outDir, { recursive: true }).catch(() => 0);
+		fs.rm(outDir, { recursive: true }).catch(n);
 	});
 });

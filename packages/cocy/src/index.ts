@@ -10,6 +10,7 @@ import { CocyOptions } from './types/CocyOptions';
 import { CocyEvents } from './types/CocyEvents';
 import CocyFile from './CocyFile';
 import CocyFiles from './CocyFiles';
+import CocyDir from './CocyDir';
 
 type DropFirstInTuple<T extends any[]> = T extends [arg: any, ...rest: infer U]
 	? U
@@ -26,8 +27,8 @@ export default class Cocy extends Houk<CocyEvents> {
 	 */
 	public patterns: string[];
 	public files: CocyFiles = new CocyFiles(this);
+	public dirs: Map<string, CocyDir> = new Map();
 	public isGitRepo = false;
-	public slugs = new Set<string>();
 
 	public getListeners = super.getListeners;
 	public emit = super.emit;
@@ -102,23 +103,14 @@ export default class Cocy extends Houk<CocyEvents> {
 	 * @returns True on success, false if file didn't exist
 	 */
 	public remove(_file: CocyFile | string): boolean {
-		let path: string | undefined;
-		let file: CocyFile | undefined;
+		const file = _file instanceof CocyFile ? _file : this.files.get(_file);
 
-		if (_file instanceof CocyFile) {
-			path = [...this.files].find(([, f]) => f === _file)?.[0];
-			file = _file;
-		} else {
-			path = _file;
-			file = this.files.get(path);
-		}
-
-		if (!path || !file) return false;
+		if (!file) return false;
 
 		this.emit('fileRemoved', file);
 		this.emit('fileChanged', file);
-		this.slugs.delete(file.slug);
-		return this.files.delete(path);
+		this.dirs.get(file.path.dir)?.slugs.delete(file.slug);
+		return this.files.delete(file);
 	}
 
 	/**
@@ -126,8 +118,8 @@ export default class Cocy extends Houk<CocyEvents> {
 	 * @param dirpath Absolute path of the directory to remove.
 	 */
 	public removeDir(dirpath: string): void {
-		for (const file of this.files.keys()) {
-			const { dir } = path.parse(file);
+		for (const file of this.files.values()) {
+			const { dir } = file.path;
 
 			if (dir.startsWith(dirpath)) {
 				this.files.delete(file);
