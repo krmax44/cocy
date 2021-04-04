@@ -19,21 +19,7 @@ Docs are provided per package.
 
 ## Roadmap to v1
 
-see [TODO](https://github.com/krmax44/cocy/search?q=TODO) in code, also:
-
-- [ ] examples with frameworks, like Ream or Nuxt
-- [ ] better docs
-- [ ] extensive testing
-- [x] new name
-
-## Platform support
-
-| Platform | working | pending |
-| -------- | ------- | ------- |
-| Node.js  | 14+     | 12+     |
-| Linux    | yes     |         |
-| Windows  | no      | yes     |
-| macOS    | ?       | yes     |
+See the [Roadmap](https://github.com/krmax44/cocy/projects/1).
 
 ## Example
 
@@ -62,7 +48,7 @@ for (const file of cocy.files.values()) {
 */
 
 const { data } = cocy.files.getBySlug('hello-world');
-console.log(data);
+console.log(data.html);
 
 /*
   output:
