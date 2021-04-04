@@ -9,7 +9,7 @@ describe('slug generation', () => {
 	const cocy = new Cocy({ cwd: FIXTURE_ROOT, patterns: ['**/*.md'] });
 
 	test('finds all files', async () => {
-		await cocy.discover();
+		await cocy.process();
 		const file1 = cocy.files.get(TEST_FILE_1);
 		const file2 = cocy.files.get(TEST_FILE_2);
 		const slug1 = file1.setSlug('test');

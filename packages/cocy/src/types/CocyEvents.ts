@@ -32,7 +32,7 @@ export type CocyEvents = {
 	];
 
 	/**
-	 * Triggered after .discover() has finished
+	 * Triggered after .process() has finished
 	 */
-	afterDiscover: [];
+	afterProcess: [];
 };

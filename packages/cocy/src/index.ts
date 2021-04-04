@@ -25,7 +25,7 @@ export default class Cocy extends Houk<CocyEvents> {
 	 * @default "[]"
 	 */
 	public patterns: string[];
-	public files: CocyFiles;
+	public files: CocyFiles = new CocyFiles(this);
 	public isGitRepo = false;
 	public slugs = new Set<string>();
 
@@ -47,19 +47,17 @@ export default class Cocy extends Houk<CocyEvents> {
 		if (options.watch ?? process.env.NODE_ENV === 'development')
 			this.startWatcher();
 
-		this.files = new CocyFiles(this);
-
 		isRepo(cwd).then(result => {
 			this.isGitRepo = result;
 		});
 	}
 
 	/**
-	 * Search for files
+	 * Search for files and process them
 	 * @param cwd Directory to search files in
 	 * @default cwd Cocy instance cwd
 	 */
-	async discover(cwd = this.cwd): Promise<this> {
+	async process(cwd = this.cwd): Promise<this> {
 		const files = globby.stream(this.patterns, { cwd });
 		const queue = [];
 
@@ -73,7 +71,7 @@ export default class Cocy extends Houk<CocyEvents> {
 		}
 		await Promise.all(queue);
 
-		this.emit('afterDiscover');
+		this.emit('afterProcess');
 
 		return this;
 	}
@@ -124,14 +122,6 @@ export default class Cocy extends Houk<CocyEvents> {
 	}
 
 	/**
-	 * Update a file.
-	 * @param file
-	 */
-	public update(file: CocyFile): void {
-		this.files.set(file.path.absolute, file);
-	}
-
-	/**
 	 * Recursively deletes all files in a given directory.
 	 * @param dirpath Absolute path of the directory to remove.
 	 */
@@ -162,7 +152,7 @@ export default class Cocy extends Houk<CocyEvents> {
 
 		listen('add', this.add);
 		listen('change', this.add);
-		listen('addDir', this.discover);
+		listen('addDir', this.process);
 		listen('unlink', this.remove);
 		listen('unlinkDir', this.removeDir);
 	}

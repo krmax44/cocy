@@ -22,7 +22,7 @@ describe('basic tests', () => {
 			patterns: ['**/*.md']
 		});
 
-		await cocy.discover();
+		await cocy.process();
 		const file = cocy.files.get(TEST_FILE);
 
 		expect(file.path.absolute).toBe(TEST_FILE);

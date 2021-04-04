@@ -11,7 +11,7 @@ function makeInstance() {
 describe('assets', () => {
 	test('finds all files', async () => {
 		const cocy = makeInstance();
-		await cocy.discover();
+		await cocy.process();
 
 		cocy.on('assetAdded', resolve => resolve('resolved'));
 
@@ -24,7 +24,7 @@ describe('assets', () => {
 
 	test('adds keyed assets', async () => {
 		const cocy = makeInstance();
-		await cocy.discover();
+		await cocy.process();
 
 		cocy.on('assetAdded', resolve => resolve('resolved'));
 
@@ -37,7 +37,7 @@ describe('assets', () => {
 
 	test('deals with no resolver', async () => {
 		const cocy = makeInstance();
-		await cocy.discover();
+		await cocy.process();
 
 		const file = cocy.files.get(TEST_FILE);
 

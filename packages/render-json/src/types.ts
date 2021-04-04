@@ -22,7 +22,7 @@ export interface Options {
 	) => OptionalPromise<Record<string, any> | undefined>;
 
 	/**
-	 * A custom index.json generator. Will be called, after .discover() finished.
+	 * A custom index.json generator. Will be called, after .process() finished.
 	 * The return value will be saved as the index JSON.
 	 */
 	indexGenerator?: (

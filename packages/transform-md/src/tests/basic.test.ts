@@ -10,7 +10,7 @@ describe('transform markdown', () => {
 
 		cocy.on('assetAdded', resolve => resolve('foo'));
 
-		await cocy.discover();
+		await cocy.process();
 
 		const firstFile: CocyMdFile = cocy.files.getBySlug('hello');
 		const secondFile: CocyMdFile = cocy.files.getBySlug('second-post-yeah');

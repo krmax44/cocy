@@ -35,7 +35,7 @@ import Cocy from 'cocy';
 import md from '@cocy/transform-md';
 
 const cocy = new Cocy().use(md); // setup Cocy with Markdown transformer
-await cocy.discover(); // search for files
+await cocy.process(); // search for files
 
 for (const file of cocy.files.values()) {
 	console.log(file.slug);

@@ -27,7 +27,7 @@ export default async function CocyRenderJSON(
 	instance.on('fileAdded', renderFile);
 	instance.on('fileUpdated', renderFile);
 	instance.on('fileRemoved', removeFile);
-	instance.on('afterDiscover', renderIndex);
+	instance.on('afterProcess', renderIndex);
 
 	function determineLocation(file: CocyFile): DestLocation {
 		const { dir } = path.parse(file.path.relative);

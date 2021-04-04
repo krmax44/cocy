@@ -9,7 +9,7 @@ describe('CocyFiles', () => {
 
 	test('get file using utils', async () => {
 		expect.assertions(3);
-		await cocy.discover();
+		await cocy.process();
 
 		const file1 = cocy.files.getBySlug('test');
 		expect(file1.path.absolute).toBe(TEST_FILE);

@@ -9,7 +9,7 @@ describe('readme example', () => {
 			patterns: ['./fixtures/readme/*.md'],
 			cwd: __dirname
 		}).use(md);
-		await cocy.discover();
+		await cocy.process();
 
 		const logs = [];
 		for (const file of cocy.files.values()) {

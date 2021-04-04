@@ -8,7 +8,7 @@ describe('transform YAML', () => {
 
 		const cocy = new Cocy({ cwd }).use(yaml);
 
-		await cocy.discover();
+		await cocy.process();
 
 		const first = path.join(cwd, 'first.yml');
 

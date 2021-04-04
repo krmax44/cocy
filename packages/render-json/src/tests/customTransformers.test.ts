@@ -21,7 +21,7 @@ describe('render JSON', () => {
 	test('renders all files', async () => {
 		expect.assertions(3);
 
-		await cocy.discover();
+		await cocy.process();
 
 		const outfile1 = path.join(outDir, 'test.json');
 
