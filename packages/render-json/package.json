@@ -1,6 +1,6 @@
 {
   "name": "@cocy/render-json",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "license": "MIT",
   "files": [
     "dist"
@@ -18,7 +18,7 @@
     "directory": "packages/render-json"
   },
   "dependencies": {
-    "cocy": "^1.0.0-alpha.1"
+    "cocy": "^1.0.0-alpha.2"
   },
   "devDependencies": {
     "waait": "^1.0.5"

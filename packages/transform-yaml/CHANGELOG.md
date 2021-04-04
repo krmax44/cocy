@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.2](https://github.com/krmax44/cocy/compare/@cocy/transform-yaml@1.0.0-alpha.1...@cocy/transform-yaml@1.0.0-alpha.2) (2021-04-04)
+
+
+### Features
+
+* complete path info for files ([31efa1e](https://github.com/krmax44/cocy/commit/31efa1e490e02f91d448e03791d90b08a331eaab))
+
+
+
+
+
 # 1.0.0-alpha.1 (2021-03-30)
 
 

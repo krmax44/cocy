@@ -1,6 +1,6 @@
 {
   "name": "@cocy/transform-md",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "license": "MIT",
   "files": [
     "dist"
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "always-array": "^1.1.0",
-    "cocy": "^1.0.0-alpha.1",
+    "cocy": "^1.0.0-alpha.2",
     "remark": "^13.0.0",
     "remark-extract-frontmatter": "^3.1.0",
     "remark-frontmatter": "^3.0.0",
