@@ -47,7 +47,7 @@ for (const file of cocy.files.values()) {
   second-post
 */
 
-const { data } = cocy.files.getBySlug('hello-world');
+const { data } = cocy.files.getByPath('posts', 'Hello-World.md');
 console.log(data.html);
 
 /*

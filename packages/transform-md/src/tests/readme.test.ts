@@ -1,14 +1,14 @@
 import Cocy from 'cocy';
 import md from '..';
+import path from 'path';
+
+const cwd = path.join(__dirname, 'fixtures', 'readme');
 
 describe('readme example', () => {
 	test('example works', async () => {
 		expect.assertions(2);
 
-		const cocy = new Cocy({
-			patterns: ['./fixtures/readme/*.md'],
-			cwd: __dirname
-		}).use(md);
+		const cocy = new Cocy({ cwd }).use(md);
 		await cocy.process();
 
 		const logs = [];
@@ -18,7 +18,7 @@ describe('readme example', () => {
 
 		expect(logs).toEqual(['hello-world', 'second-post']);
 
-		const { data } = cocy.files.getBySlug('hello-world');
+		const { data } = cocy.files.getByPath('posts', 'Hello-World.md');
 		expect(data.html).toBe('<p>Hey!</p>\n');
 	});
 });

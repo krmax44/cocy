@@ -136,4 +136,11 @@ export default class CocyFile<DataType = any> {
 		this.dir.slugs.add(availableSlug);
 		return availableSlug;
 	}
+
+	public get route(): string[] {
+		const dir = relative(this.instance.cwd, this.path.dir);
+		const segments = dir ? dir.split('/') : [];
+		segments.push(this.slug);
+		return segments;
+	}
 }

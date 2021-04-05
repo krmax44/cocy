@@ -12,8 +12,8 @@ describe('transform markdown', () => {
 
 		await cocy.process();
 
-		const firstFile: CocyMdFile = cocy.files.getBySlug('hello');
-		const secondFile: CocyMdFile = cocy.files.getBySlug('second-post-yeah');
+		const firstFile: CocyMdFile = cocy.files.getByPath('Hello-World.md');
+		const secondFile: CocyMdFile = cocy.files.getByPath('Second-Post.md');
 
 		expect(firstFile.data.html).toBe(
 			'<h1>Hello World</h1>\n' +

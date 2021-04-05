@@ -15,7 +15,7 @@ const TEST_FILE_DEEP = path.join(TEST_FOLDER, 'inner.md');
 
 describe('basic tests', () => {
 	test('finds all files', async () => {
-		expect.assertions(8);
+		expect.assertions(10);
 
 		await fs.mkdir(TEST_FOLDER);
 		await fs.writeFile(TEST_FILE_DEEP, '');
@@ -31,9 +31,12 @@ describe('basic tests', () => {
 
 		expect(file.path.absolute).toBe(TEST_FILE);
 		expect(file.raw).toBe('Test!\n');
+		expect(file.route).toEqual(['test']);
 
 		expect(file.slug).toBe('test');
 		expect(cocy.files.has(TEST_FILE_DEEP)).toBe(true);
+
+		expect(cocy.files.get(TEST_FILE_DEEP).route).toEqual(['folder', 'inner']);
 
 		await fs.writeFile(TEST_FILE_2, TEST_CONTENT);
 		await wait(100);

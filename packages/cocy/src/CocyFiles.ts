@@ -1,6 +1,7 @@
 import path from 'path';
 import Cocy from '.';
 import CocyFile from './CocyFile';
+import equalArray from './utils/equalArray';
 
 export default class CocyFiles extends Map<string, CocyFile> {
 	constructor(
@@ -47,15 +48,6 @@ export default class CocyFiles extends Map<string, CocyFile> {
 	}
 
 	/**
-	 * get a file by its slug
-	 * @param slug Slug to find
-	 * @returns file, if found
-	 */
-	public getBySlug(slug: string): CocyFile | undefined {
-		return this.find(file => file.slug === slug);
-	}
-
-	/**
 	 * get a file by its relative or absolute path
 	 * @param segments path segments passed to path.join
 	 * @returns file, if found
@@ -63,6 +55,12 @@ export default class CocyFiles extends Map<string, CocyFile> {
 	public getByPath(...segments: string[]): CocyFile | undefined {
 		const file = path.join(this.instance.cwd, ...segments);
 		return this.get(file);
+	}
+
+	public getByRoute(...segments: string[]): CocyFile | undefined {
+		const route = segments.map(s => s.split('/')).flat();
+
+		return this.find(file => equalArray(file.route, route));
 	}
 
 	/**
